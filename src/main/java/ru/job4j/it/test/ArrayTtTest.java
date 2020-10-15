@@ -1,12 +1,12 @@
-package ru.job4j.it;
+package ru.job4j.it.test;
+
+import org.junit.Test;
+import ru.job4j.it.ArrayIt;
+
+import java.util.NoSuchElementException;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-
-import java.util.NoSuchElementException;
-import org.junit.Test;
-
-
 
 
 public class ArrayTtTest {
