@@ -17,4 +17,6 @@ hs_err_pid*
 target
 
 out
-*.log
+.iml
+'.iml' 
+'.iml' 
