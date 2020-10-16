@@ -5,34 +5,33 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class FlatMap<T> implements Iterator<T> {
-private final Iterator<Iterator<T>> data;
-private Iterator<T> cursor;
+  private final Iterator<Iterator<T>> data;
+  private Iterator<T> cursor;
 
   public FlatMap(Iterator<Iterator<T>> data) {
     this.data = data;
   }
-  private void check () {
-    if (cursor == null && data.hasNext()){
-      cursor = data.next();
-    }
     //Stream.of(data).flatMap(x -> Stream.of(x.next())).filter(Iterator::hasNext).forEach(i -> cursor = i);
-  }
-
   @Override
   public boolean hasNext() {
-    check();
-    return cursor.hasNext();
+    while (cursor == null && data.hasNext()) {
+      cursor = data.next();
+    }
+    return cursor != null;
   }
 
   @Override
   public T next() {
-    check();
-    if (cursor == null)
-      throw  new NoSuchElementException();
-    if(!cursor.hasNext() && data.hasNext())
-      cursor = data.next();
-      return cursor.next();
+    if (!hasNext()) {
+      throw new NoSuchElementException();
     }
+    T n = cursor.next();
+    if (!cursor.hasNext()) {
+      cursor = null;
+    }
+    return n;
+  }
+
   public static void main(String[] args) {
     Iterator<Iterator<Integer>> data = List.of(
       List.of(1, 2, 3).iterator(),

@@ -11,19 +11,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
 public class FlatMapTest {
-  @Test
-  public void myTest() {
-    Iterator<Iterator<Integer>> data = List.of(
-      List.of(1, 2, 3).iterator(),
-      List.of(4, 5, 6).iterator(),
-      List.of(7, 8, 9).iterator()
-    ).iterator();
-    FlatMap<Integer> flat = new FlatMap<>(data);
-    System.out.println(flat.next());
-    System.out.println(flat.next());System.out.println(flat.next());
 
-
-  }
   @Test
   public void whenDiffNext() {
     Iterator<Iterator<Integer>> data = List.of(
