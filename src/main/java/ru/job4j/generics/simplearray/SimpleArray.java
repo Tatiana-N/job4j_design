@@ -8,9 +8,18 @@ public class SimpleArray<T> implements Iterable<T> {
   public static void main(String[] args) {
   }
 
+  private final int size;
+  private T[] array;
+  private int index = 0;
+
+  public SimpleArray(int size) {
+    this.array = (T[]) new Object[size];
+    this.size = array.length;
+  }
+
   @Override
   public Iterator<T> iterator() {
-    Iterator<T> it = new Iterator<T>() {
+    return new Iterator<>() {
       private int point = 0;
 
       @Override
@@ -26,16 +35,6 @@ public class SimpleArray<T> implements Iterable<T> {
         return array[point++];
       }
     };
-    return it;
-  }
-
-  private final int size;
-  private T[] array;
-  private int index = 0;
-
-  public SimpleArray(int size) {
-    this.array = (T[]) new Object[size];
-    this.size = array.length;
   }
 
   public void add(T model) {
