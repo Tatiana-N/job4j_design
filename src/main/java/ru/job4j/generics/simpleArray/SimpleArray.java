@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArray <T> implements Iterable{
+public class SimpleArray<T> implements Iterable {
   public static void main(String[] args) {
   }
 
@@ -28,41 +28,44 @@ public class SimpleArray <T> implements Iterable{
     };
     return it;
   }
-  private final int size ;
+
+  private final int size;
   private T[] array;
- private int index = 0;
+  private int index = 0;
 
   public SimpleArray(int size) {
-    this.array = (T[])new Object[size];
+    this.array = (T[]) new Object[size];
     this.size = array.length;
   }
 
   public void add(T model) {
-   try {
-     Objects.checkIndex(index,array.length);
-     array[index] = model;
-     index++;
-   } catch (IndexOutOfBoundsException e){
-     System.out.println("массив не бесконечен");
-   }
-
-  }
-  public void set(int index, T model){
     try {
-      Objects.checkIndex(index,array.length);
+      Objects.checkIndex(index, array.length);
       array[index] = model;
-    } catch (IndexOutOfBoundsException e){
+      index++;
+    } catch (IndexOutOfBoundsException e) {
+      System.out.println("массив не бесконечен");
+    }
+  }
+
+  public void set(int index, T model) {
+    try {
+      Objects.checkIndex(index, array.length);
+      array[index] = model;
+    } catch (IndexOutOfBoundsException e) {
       System.out.println("такого индекса нет в этом массиве");
     }
 
 
   }
-  public void remove(int in){
-    System.arraycopy(array,in+1,array,in,size-in-1);
-    array[size-1] = null;
+
+  public void remove(int in) {
+    System.arraycopy(array, in + 1, array, in, size - in - 1);
+    array[size - 1] = null;
     index--;
   }
-  public T get(int index){
+
+  public T get(int index) {
     return array[index];
   }
 }
