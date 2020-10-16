@@ -1,10 +1,10 @@
-package ru.job4j.generics.simpleArray;
+package ru.job4j.generics.simplearray;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArray<T> implements Iterable {
+public class SimpleArray<T> implements Iterable<T> {
   public static void main(String[] args) {
   }
 
@@ -39,24 +39,19 @@ public class SimpleArray<T> implements Iterable {
   }
 
   public void add(T model) {
-    try {
-      Objects.checkIndex(index, array.length);
+    if (canAdd()) {
       array[index] = model;
       index++;
-    } catch (IndexOutOfBoundsException e) {
-      System.out.println("массив не бесконечен");
     }
   }
 
+  public boolean canAdd() {
+    return index < array.length;
+  }
+
   public void set(int index, T model) {
-    try {
-      Objects.checkIndex(index, array.length);
-      array[index] = model;
-    } catch (IndexOutOfBoundsException e) {
-      System.out.println("такого индекса нет в этом массиве");
-    }
-
-
+    Objects.checkIndex(index, array.length);
+    array[index] = model;
   }
 
   public void remove(int in) {
