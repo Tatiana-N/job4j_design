@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
-public class SimpleArray<T> implements Iterable {
+public class SimpleArray <T> implements Iterable{
   public static void main(String[] args) {
   }
 
@@ -15,7 +15,7 @@ public class SimpleArray<T> implements Iterable {
 
       @Override
       public boolean hasNext() {
-        return point < size && array[point] != null;
+        return point < size;
       }
 
       @Override
@@ -28,50 +28,41 @@ public class SimpleArray<T> implements Iterable {
     };
     return it;
   }
-
-  private final int size;
+  private final int size ;
   private T[] array;
-  int index = 0;
+ private int index = 0;
 
   public SimpleArray(int size) {
-    this.array = (T[]) new Object[size];
+    this.array = (T[])new Object[size];
     this.size = array.length;
   }
 
-  /**
-   *
-   * @param
-   *
-   * model
-   * added model to SimpleArray
-   */
-
   public void add(T model) {
-    Objects.checkIndex(index, array.length);
-    array[index] = model;
-    index++;
-  }
-
-  /**
-   insert the element model into the SimpleArray under the index
-   * @param
-   * index
-   * @param
-   * model
-   */
-
-  public void set(int index, T model) {
-    Objects.checkIndex(index, array.length);
-    array[index] = model;
+   try {
+     Objects.checkIndex(index,array.length);
+     array[index] = model;
+     index++;
+   } catch (IndexOutOfBoundsException e){
+     System.out.println("массив не бесконечен");
+   }
 
   }
+  public void set(int index, T model){
+    try {
+      Objects.checkIndex(index,array.length);
+      array[index] = model;
+    } catch (IndexOutOfBoundsException e){
+      System.out.println("такого индекса нет в этом массиве");
+    }
 
-  public void remove(int index) {
-    System.arraycopy(array, index + 1, array, index, size - index - 1);
-    array[size - 1] = null;
+
   }
-
-  public T get(int index) {
+  public void remove(int in){
+    System.arraycopy(array,in+1,array,in,size-in-1);
+    array[size-1] = null;
+    index--;
+  }
+  public T get(int index){
     return array[index];
   }
 }
