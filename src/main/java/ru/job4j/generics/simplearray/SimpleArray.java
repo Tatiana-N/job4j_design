@@ -48,12 +48,13 @@ public class SimpleArray<T> implements Iterable<T> {
     return index < array.length;
   }
 
-  public void set(int index, T model) {
-    Objects.checkIndex(index, array.length);
-    array[index] = model;
+  public void set(int in, T model) {
+    Objects.checkIndex(in, index);
+    array[in] = model;
   }
 
   public void remove(int in) {
+    Objects.checkIndex(in, index);
     System.arraycopy(array, in + 1, array, in, size - in - 1);
     array[size - 1] = null;
     index--;
