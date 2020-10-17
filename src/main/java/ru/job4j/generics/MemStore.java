@@ -2,6 +2,7 @@ package ru.job4j.generics;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class MemStore<T extends Base> implements Store<T> {
 
@@ -26,7 +27,7 @@ public class MemStore<T extends Base> implements Store<T> {
         return i;
       }
     }
-    return -1;
+    throw new NoSuchElementException();
   }
 
   @Override
