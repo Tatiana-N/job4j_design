@@ -27,24 +27,35 @@ public class MemStore<T extends Base> implements Store<T> {
         return i;
       }
     }
-    throw new NoSuchElementException();
+    return -1;
   }
 
   @Override
   public boolean replace(String id, T model) {
     int a = getindexById(id);
+    if (a == -1) {
+      return false;
+    }
     mem.set(a, model);
     return mem.get(a).getId().equals(model.getId());
   }
 
   @Override
   public boolean delete(String id) {
-    return mem.remove(mem.get(getindexById(id)));
+    int a = getindexById(id);
+    if (a == -1) {
+      return false;
+    }
+    return mem.remove(mem.get(a));
   }
 
   @Override
   public T findById(String id) {
-    return mem.get(getindexById(id));
+    int a = getindexById(id);
+    if (a == -1) {
+      throw new NoSuchElementException();
+    }
+    return mem.get(a);
   }
 
   public int size() {
