@@ -9,22 +9,44 @@ public class MemStore<T extends Base> implements Store<T> {
 
   @Override
   public void add(T model) {
-mem.add(model);
+    mem.add(model);
+  }
+
+  /**
+   * Returns the index of the first occurrence of the specified element
+   * in this list, or -1 if this list does not contain the element.
+   *
+   * @param id element to search for
+   * @return the index of the first occurrence of the specified element in
+   * this list, or -1 if this list does not contain the element
+   */
+  public int getindexById(String id) {
+    for (int i = 0; i < mem.size(); i++) {
+      if (mem.get(i).getId().equals(id)) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   @Override
   public boolean replace(String id, T model) {
-    mem.set(Integer.parseInt(id), model);
-    return mem.get(Integer.parseInt(id)).equals(model);
+    int a = getindexById(id);
+    mem.set(a, model);
+    return mem.get(a).getId().equals(model.getId());
   }
 
   @Override
   public boolean delete(String id) {
-    return mem.remove(mem.get(Integer.parseInt(id)));
+    return mem.remove(mem.get(getindexById(id)));
   }
 
   @Override
   public T findById(String id) {
-    return mem.get(Integer.parseInt(id));
+    return mem.get(getindexById(id));
+  }
+
+  public int size() {
+    return mem.size();
   }
 }

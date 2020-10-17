@@ -12,6 +12,7 @@
 hs_err_pid*
 
 .idea
+tasks/
 *.iml
 
 target

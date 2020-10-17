@@ -22,4 +22,5 @@ store.add(model);
   public User findById(String id) {
     return store.findById(id);
   }
-}
+
+  }
