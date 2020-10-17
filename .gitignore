@@ -12,6 +12,8 @@
 hs_err_pid*
 
 .idea
+.ru.job4j.tasks/
+.tasks/
 tasks/
 *.iml
 
