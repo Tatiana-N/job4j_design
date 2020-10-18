@@ -59,18 +59,13 @@ public class SimpleArray<T> implements Iterable<T> {
   }
 
   public int size() {
-    return size;
+    return index;
   }
 
   public void removeByIndex(int in) {
     Objects.checkIndex(in, index);
-    T[] array1 = (T[]) new Object[index - 1];
-    System.arraycopy(array, 0, array1, 0, in);
-    System.arraycopy(array, in + 1, array1, in, array1.length - in);
-    size = array1.length;
-    array = array1;
-    index--;
-
+    System.arraycopy(array, in + 1, array, in, index - 1 - in);
+    array[--index] = null;
     modCount++;
   }
 }
