@@ -9,7 +9,6 @@ public class SimpleLinkedList<E> implements Iterable<E> {
   transient Node<E> first;
   transient Node<E> last;
   private int modCount = 0;
-  private int index = 0;
   private int size = 0;
 
   public SimpleLinkedList() {
@@ -32,29 +31,32 @@ public class SimpleLinkedList<E> implements Iterable<E> {
       }
       last = n;
     }
-    index++;
     size++;
     modCount++;
   }
 
+  public int size() {
+    return size;
+  }
+
   public E get(int in) {
-    Objects.checkIndex(in, index);
+    Objects.checkIndex(in, size);
     Node<E> a = first;
-    for (int i = 0; i <= in; i++) {
+    for (int i = 0; i < in; i++) {
       a = a.next;
     }
     return a.item;
   }
 
   public E removeByIndex(int in) {
-    Objects.checkIndex(in, index);
+    Objects.checkIndex(in, size);
     Node<E> a = first;
     if (a != null) {
       if (first.next == null) {
         first.item = null;
         last.item = null;
       }
-      for (int i = 1; i <= in; i++) {
+      for (int i = 0; i < in; i++) {
         a = a.next;
       }
       Node<E> prev = a.prev;
@@ -71,7 +73,6 @@ public class SimpleLinkedList<E> implements Iterable<E> {
           next.prev = prev;
         }
       }
-      index--;
       size--;
       modCount++;
     } else {
@@ -90,7 +91,7 @@ public class SimpleLinkedList<E> implements Iterable<E> {
 
       @Override
       public boolean hasNext() {
-        return count < index;
+        return count < size;
       }
 
       @Override
