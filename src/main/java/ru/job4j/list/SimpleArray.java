@@ -49,9 +49,7 @@ public class SimpleArray<T> implements Iterable<T> {
   public void add(T model) {
     if (index == size) {
       T[] array1 = (T[]) new Object[size + 2];
-      for (int i = 0; i < index; i++) {
-        array1[i] = array[i];
-      }
+      System.arraycopy(array, 0, array1, 0, array.length);
       array = array1;
       size = array1.length;
     }
@@ -60,14 +58,15 @@ public class SimpleArray<T> implements Iterable<T> {
 
   }
 
+  public int size() {
+    return size;
+  }
+
   public void removeByIndex(int in) {
     Objects.checkIndex(in, index);
     T[] array1 = (T[]) new Object[index - 1];
-    for (int i = 0, j = 0; i < index; i++) {
-      if (i != in) {
-        array1[j++] = array[i];
-      }
-    }
+    System.arraycopy(array, 0, array1, 0, in);
+    System.arraycopy(array, in + 1, array1, in, array1.length - in);
     size = array1.length;
     array = array1;
     index--;
