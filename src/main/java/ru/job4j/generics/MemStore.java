@@ -2,7 +2,6 @@ package ru.job4j.generics;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 
 public class MemStore<T extends Base> implements Store<T> {
 
@@ -49,11 +48,17 @@ public class MemStore<T extends Base> implements Store<T> {
     return mem.remove(mem.get(a));
   }
 
+  /**
+   * Returns the element whith specified id in this list.
+   *
+   * @param id of the element
+   * @return null if element whith this id not exist in this list
+   */
   @Override
   public T findById(String id) {
     int a = getindexById(id);
     if (a == -1) {
-      throw new NoSuchElementException();
+      return null;
     }
     return mem.get(a);
   }
