@@ -1,6 +1,7 @@
 package ru.job4j.list;
 
 import java.util.Iterator;
+import java.util.Objects;
 
 public class SimpleSet<E> implements Iterable<E> {
   private SimpleArray<E> array;
@@ -11,7 +12,7 @@ public class SimpleSet<E> implements Iterable<E> {
 
   public boolean canAdd(E e) {
     for (E h : array) {
-      if (e.equals(h)) {
+      if (Objects.equals(e, h)) {
         return false;
       }
     }
