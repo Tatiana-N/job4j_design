@@ -1,9 +1,6 @@
 package ru.job4j.user;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class User {
   private String name;
@@ -32,6 +29,11 @@ public class User {
 
   public void setBirthday(Calendar birthday) {
     this.birthday = birthday;
+  }
+
+  @Override
+  public int hashCode() {
+    return Integer.parseInt(name.length() + "" + children + "" + birthday.getFirstDayOfWeek());
   }
 
   public User(String name, int children, GregorianCalendar birthday) {
