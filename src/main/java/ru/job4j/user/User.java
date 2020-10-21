@@ -31,16 +31,18 @@ public class User {
     this.birthday = birthday;
   }
 
-//  @Override
-//  public int hashCode() {
-//    return Integer.parseInt(name.length() + "" + children + "" + birthday.getFirstDayOfWeek());
-//  }
-
+  @Override
+  public int hashCode() {
+    return Integer.parseInt(name.length() + "" + children + "" + birthday.getFirstDayOfWeek());
+  }
 
   @Override
   public boolean equals(Object obj) {
-    User obj1 = (User) obj;
-    return this.birthday.equals(obj1.birthday) && this.children == obj1.children && this.name.equals(obj1.name);
+    if (obj instanceof User) {
+      User obj1 = (User) obj;
+      return this.birthday.equals(obj1.birthday) && this.children == obj1.children && this.name.equals(obj1.name);
+    }
+    return false;
   }
 
   public User(String name, int children, GregorianCalendar birthday) {
