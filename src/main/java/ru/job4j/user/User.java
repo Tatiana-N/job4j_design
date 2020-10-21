@@ -44,13 +44,11 @@ public class User {
     }
     return false;
   }
-
   public User(String name, int children, GregorianCalendar birthday) {
     this.name = name;
     this.children = children;
     this.birthday = birthday;
   }
-
   public static void main(String[] args) {
     User us1 = new User("Tom", 3, new GregorianCalendar(1990, Calendar.JANUARY, 1));
     User us2 = new User("Tom", 3, new GregorianCalendar(1990, Calendar.JANUARY, 1));
