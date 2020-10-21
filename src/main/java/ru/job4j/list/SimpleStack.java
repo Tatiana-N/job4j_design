@@ -1,6 +1,6 @@
 package ru.job4j.list;
 
-public class SimpleStack<T> {
+public class SimpleStack<T>  {
   private ForwardLinked<T> linked = new ForwardLinked<>();
 
   public T pop() {
@@ -10,4 +10,5 @@ public class SimpleStack<T> {
   public void push(T value) {
     linked.addFirst(value);
   }
+
 }

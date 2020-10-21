@@ -1,4 +1,4 @@
-package ru.job4j.generics.simplearray;
+package ru.job4j.list.simplearray;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
