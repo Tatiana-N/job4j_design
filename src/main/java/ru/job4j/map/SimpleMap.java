@@ -1,8 +1,9 @@
 package ru.job4j.map;
 
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class SimpleMap<K, V> implements Iterable {
+public class SimpleMap<K, V> implements Iterable<K> {
   Object[][] array;
   int count = 0;
   double loadFactor;
@@ -28,7 +29,7 @@ public class SimpleMap<K, V> implements Iterable {
       array[1][hash] = value;
       count++;
       return true;
-    } else if (count == array[1].length * loadFactor) {
+    } else if (count > array[1].length * loadFactor) {
       Object[][] ar = new Object[2][array[1].length * 2];
       for (int i = 0; i < array[1].length; i++) {
         if (array[0][i] != null) {
@@ -40,6 +41,7 @@ public class SimpleMap<K, V> implements Iterable {
       }
       array = ar;
       insert(key, value);
+      return true;
     }
 //    Objects.checkIndex(hash, array.length);
 
@@ -54,25 +56,37 @@ public class SimpleMap<K, V> implements Iterable {
   }
 
   public boolean delete(K key) {
+    int hash = hash(key.hashCode(), array);
+    if (array[0][hash] != null) {
+      array[0][hash] = null;
+      array[1][hash] = null;
+      count--;
+      return true;
+    }
     return false;
   }
 
   @Override
-  public Iterator iterator() {
-    return new Iterator() {
+  public Iterator<K> iterator() {
+    return new Iterator<>() {
       int point = 0;
+      int object = 0;
 
       @Override
       public boolean hasNext() {
-        return point < array[1].length;
+        return object < count;
       }
 
       @Override
-      public Object next() {
-        while (array[0][point] == null && hasNext()) {
+      public K next() {
+        if (!hasNext()) {
+          throw new NoSuchElementException();
+        }
+        while (array[0][point] == null) {
           point++;
         }
-        return array[0][point++];
+        object++;
+        return (K) array[0][point++];
       }
     };
   }
