@@ -19,6 +19,20 @@ class Tree<E> implements SimpleTree<E> {
     return true;
   }
 
+  public boolean isBinary() {
+    Queue<Node> check = new LinkedList<>();
+    check.offer(root);
+    while (!check.isEmpty()) {
+      Node temp = check.poll();
+      if (temp.children.size() > 2) {
+        return false;
+      }
+      check.addAll(temp.children);
+    }
+
+    return true;
+  }
+
   @Override
   public Optional<Node<E>> findBy(E value) {
     Optional<Node<E>> rsl = Optional.empty();
