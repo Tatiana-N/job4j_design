@@ -4,62 +4,59 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 public class SimpleMap<K, V> implements Iterable<K> {
-  Object[][] array;
-  int count = 0;
-  double loadFactor;
+  private Node<K, V>[] array;
+  private int count = 0;
+  private double loadFactor;
 
   public SimpleMap(double loadFactor) {
-    this.array = new Object[2][3];
+    this.array = new Node[16];
     this.loadFactor = loadFactor;
   }
 
   public SimpleMap(int size, double loadFactor) {
-    this.array = new Object[2][size];
+    this.array = new Node[size];
     this.loadFactor = loadFactor;
   }
 
-  int hash(int hashCode, Object[][] array) {
-    return hashCode % array[1].length;
+  int hash(int hashCode, Object[] array) {
+    return hashCode % array.length;
   }
 
   public boolean insert(K key, V value) {
     int hash = hash(key.hashCode(), array);
-    if (array[0][hash] == null && count < array[1].length * loadFactor) {
-      array[0][hash] = key;
-      array[1][hash] = value;
+    if (array[hash] == null && count < array.length * loadFactor) {
+      array[hash] = new Node<>(key, value);
       count++;
       return true;
-    } else if (count > array[1].length * loadFactor) {
-      Object[][] ar = new Object[2][array[1].length * 2];
-      for (int i = 0; i < array[1].length; i++) {
-        if (array[0][i] != null) {
-          int hk = array[0][i].hashCode();
+    } else if (count > array.length * loadFactor) {
+      Node<K, V>[] ar = new Node[array.length * 2];
+      for (Node<K, V> node : array) {
+        if (node != null) {
+          int hk = node.key.hashCode();
           int hash2 = hash(hk, ar);
-          ar[0][hash2] = array[0][i];
-          ar[1][hash2] = array[1][i];
+          ar[hash2] = node;
         }
       }
       array = ar;
       insert(key, value);
-      return true;
     }
-//    Objects.checkIndex(hash, array.length);
-
     return false;
   }
 
   public V get(K key) {
-    if (array[0][hash(key.hashCode(), array)] != null) {
-      return (V) array[1][hash(key.hashCode(), array)];
+    int hk = key.hashCode();
+    int hash = hash(hk, array);
+    if (array[hash] != null) {
+      return array[hash].value;
     }
     return null;
   }
 
   public boolean delete(K key) {
-    int hash = hash(key.hashCode(), array);
-    if (array[0][hash] != null) {
-      array[0][hash] = null;
-      array[1][hash] = null;
+    int hk = key.hashCode();
+    int hash = hash(hk, array);
+    if (array[hash] != null) {
+      array[hash] = null;
       count--;
       return true;
     }
@@ -82,12 +79,22 @@ public class SimpleMap<K, V> implements Iterable<K> {
         if (!hasNext()) {
           throw new NoSuchElementException();
         }
-        while (array[0][point] == null) {
+        while (array[point] == null) {
           point++;
         }
         object++;
-        return (K) array[0][point++];
+        return array[point++].key;
       }
     };
+  }
+
+  class Node<K, V> {
+    V value;
+    K key;
+
+    public Node(K key, V value) {
+      this.value = value;
+      this.key = key;
+    }
   }
 }
