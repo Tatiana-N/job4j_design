@@ -1,5 +1,6 @@
 package ru.job4j.map;
 
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
@@ -46,7 +47,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
   public V get(K key) {
     int hk = key.hashCode();
     int hash = hash(hk, array);
-    if (array[hash] != null) {
+    if (array[hash] != null && key.equals(array[hash].key)) {
       return array[hash].value;
     }
     return null;
@@ -55,7 +56,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
   public boolean delete(K key) {
     int hk = key.hashCode();
     int hash = hash(hk, array);
-    if (array[hash] != null) {
+    if (array[hash] != null && key.equals(array[hash].key)) {
       array[hash] = null;
       count--;
       return true;
@@ -65,9 +66,11 @@ public class SimpleMap<K, V> implements Iterable<K> {
 
   @Override
   public Iterator<K> iterator() {
+
     return new Iterator<>() {
       int point = 0;
       int object = 0;
+      final int countIt = count;
 
       @Override
       public boolean hasNext() {
@@ -76,6 +79,9 @@ public class SimpleMap<K, V> implements Iterable<K> {
 
       @Override
       public K next() {
+        if (countIt != count) {
+          throw new ConcurrentModificationException();
+        }
         if (!hasNext()) {
           throw new NoSuchElementException();
         }
