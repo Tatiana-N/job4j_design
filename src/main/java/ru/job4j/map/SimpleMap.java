@@ -8,6 +8,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
   private Node<K, V>[] array;
   private int count = 0;
   private double loadFactor;
+  private int modif = 0;
 
   public SimpleMap(double loadFactor) {
     this.array = new Node[16];
@@ -27,7 +28,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
     int hash = hash(key.hashCode(), array);
     if (array[hash] == null && count < array.length * loadFactor) {
       array[hash] = new Node<>(key, value);
-      count++;
+      count++; modif++;
       return true;
     } else if (count > array.length * loadFactor) {
       Node<K, V>[] ar = new Node[array.length * 2];
@@ -58,7 +59,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
     int hash = hash(hk, array);
     if (array[hash] != null && key.equals(array[hash].key)) {
       array[hash] = null;
-      count--;
+      count--; modif++;
       return true;
     }
     return false;
@@ -70,7 +71,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
     return new Iterator<>() {
       int point = 0;
       int object = 0;
-      final int countIt = count;
+      final int countIt = modif;
 
       @Override
       public boolean hasNext() {
@@ -79,7 +80,7 @@ public class SimpleMap<K, V> implements Iterable<K> {
 
       @Override
       public K next() {
-        if (countIt != count) {
+        if (countIt != modif) {
           throw new ConcurrentModificationException();
         }
         if (!hasNext()) {
