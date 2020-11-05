@@ -12,23 +12,14 @@ public class Application2 {
     while (!name.equals("exit")) {
       TreeSet<String> mails = new TreeSet<>(Arrays.asList(scanner.next().split(",")));
       for (String mail : mails) {
-        String oldName = mapKMailVUser.put(mail, name);
-        if (oldName != null) {
-          theSameUsers.add(oldName);
-        }
+          theSameUsers.add(mapKMailVUser.put(mail, name));
       }
-      if (theSameUsers.isEmpty()) {
         mapKUserVSetMails.put(name, mails);
-      } else {
-        Set<String> mailsNew = new HashSet<>();
         for (String n : theSameUsers) {
           if (mapKUserVSetMails.containsKey(n)) {
-            mailsNew.addAll(mapKUserVSetMails.get(n));
+            mapKUserVSetMails.get(name).addAll(mapKUserVSetMails.get(n));
             mapKUserVSetMails.remove(n);
           }
-        }
-        mailsNew.addAll(mails);
-        mapKUserVSetMails.put(name, mailsNew);
       }
       name = scanner.next();
     }
