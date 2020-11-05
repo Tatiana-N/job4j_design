@@ -1,5 +1,6 @@
 package ru.job4j.exam;
 
+import java.util.Objects;
 import java.util.TreeSet;
 
 public class User {
@@ -28,27 +29,39 @@ public class User {
   }
 
   @Override
-  public int hashCode() {
-    return 42;
-    // т.к. у пользователя может быть сколько угодно почт,
-    // а равенство хоть одной будет говорить что это один и тот же пользователь,
-    // то придется проверять только по equals?
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof User)) return false;
+    User user = (User) o;
+    return getMails().equals(user.getMails());
   }
 
   @Override
-  public boolean equals(Object obj) {
-    if (this == obj) {
-      return true;
-    }
-    if (!(obj instanceof User)) {
-      return false;
-    }
-    for (String s : ((User) obj).getMails()) {
-      if (this.getMails().contains(s)) {
-        ((User) obj).getMails().addAll(this.getMails());
-        return true;
-      }
-    }
-    return false;
+  public int hashCode() {
+    return Objects.hash(getMails());
   }
+//  @Override
+//  public int hashCode() {
+//    return 42;
+//    // т.к. у пользователя может быть сколько угодно почт,
+//    // а равенство хоть одной будет говорить что это один и тот же пользователь,
+//    // то придется проверять только по equals?
+//  }
+//
+//  @Override
+//  public boolean equals(Object obj) {
+//    if (this == obj) {
+//      return true;
+//    }
+//    if (!(obj instanceof User)) {
+//      return false;
+//    }
+//    for (String s : ((User) obj).getMails()) {
+//      if (this.getMails().contains(s)) {
+//        ((User) obj).getMails().addAll(this.getMails());
+//        return true;
+//      }
+//    }
+//    return false;
+//  }
 }
