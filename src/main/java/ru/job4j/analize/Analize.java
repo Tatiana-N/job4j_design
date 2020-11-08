@@ -10,17 +10,17 @@ public class Analize {
       changes.put(user.id, user.name);
     }
     for (User user : current) {
-      if (changes.containsKey(user.id)) {
-        if (!changes.get(user.id).equals(user.name)) {
+      String name = changes.remove(user.id);
+      if (name != null) {
+        if (!name.equals(user.name)) {
           info.changed++;
         }
+      } else {
+        info.added++;
       }
     }
-    List<User> prev2 = new ArrayList<>(previous);
-    previous.removeAll(current);
-    info.deleted = previous.size();
-    current.removeAll(prev2);
-    info.added = current.size();
+    info.deleted = changes.size();
+
     return info;
   }
 
@@ -73,7 +73,7 @@ public class Analize {
     previous.add(new User(4, "yad")); //deleted
     previous.add(new User(5, "kad")); //
     curent.add(new User(1, "Fan")); //changed
-    curent.add(new User(3, "had")); //
+    curent.add(new User(2, "had")); //
     curent.add(new User(4, "Fad")); //added
     curent.add(new User(5, "Fad")); //changed
     curent.add(new User(8, "Fad")); //added
