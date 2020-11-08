@@ -1,8 +1,6 @@
 package ru.job4j.filestream;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -17,13 +15,23 @@ public class LogFilter {
     } catch (IOException e) {
       e.printStackTrace();
     }
-    list = list.stream().filter(x -> x.split(" ")[x.split(" ").length - 2].equals("404")).peek((e) -> System.out.print("," + e)).
+    list = list.stream().filter(x -> x.split(" ")[x.split(" ").length - 2].equals("404")).
       collect(Collectors.toList());
     return list;
   }
 
+  public static void save(List<String> list, String fileName) {
+    try (PrintWriter writer = new PrintWriter(new BufferedOutputStream(new FileOutputStream(fileName)))) {
+      list.stream().forEach(x -> writer.write(x + "\n"));
+    } catch (IOException e) {
+      e.printStackTrace();
+    }
+
+  }
+
   public static void main(String[] args) {
     List<String> log = filter("C:/Tanusha/BOOKS/java/task/input2.txt");
-    System.out.println(log);
+    save(log, "C:/Tanusha/BOOKS/java/task/result2.txt");
+
   }
 }
