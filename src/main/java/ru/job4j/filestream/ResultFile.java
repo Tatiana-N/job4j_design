@@ -8,17 +8,27 @@ public class ResultFile {
 
   public static void main(String[] args) {
     ResultFile resultFile = new ResultFile("C:/Tanusha/BOOKS/java/task/result.txt");
-    for (int i = 1; i <= 10; i++) {
-      for (int j = 1; j < 10; j++) {
-        String multiply = i + " * " + j + " = " + i * j + " \t";
-        resultFile.writeInFile(multiply);
+    for (int i = 0; i < 10; i++) {
+      if (i != 0) {
+        resultFile.writeInFile("\t" + i);
+      } else {
+        resultFile.writeInFile("\t");
       }
-      resultFile.writeInFile("\n");
+      for (int j = 1; j < 10; j++) {
+        String multiply = " \t" + i * j;
+        if (i == 0) {
+          resultFile.writeInFile("\t" + j);
+        } else {
+          resultFile.writeInFile(multiply);
+        }
+      }
+      resultFile.writeInFile("\n\n");
     }
   }
 
   public ResultFile(String fileName) {
     this.fileName = fileName;
+
   }
 
   public void writeInFile(String s) {
