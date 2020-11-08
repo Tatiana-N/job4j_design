@@ -29,8 +29,8 @@ public class EvenNumberFile {
   }
 
   public static void main(String[] args) {
-EvenNumberFile evenNumberFile = new EvenNumberFile();
-List<Integer> list = evenNumberFile.readFileOfNums();
-evenNumberFile.printEvenNumber(list);
+    EvenNumberFile evenNumberFile = new EvenNumberFile();
+    List<Integer> list = evenNumberFile.readFileOfNums();
+    evenNumberFile.printEvenNumber(list);
   }
 }
