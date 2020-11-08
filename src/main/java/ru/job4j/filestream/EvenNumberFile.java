@@ -1,21 +1,20 @@
 package ru.job4j.filestream;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EvenNumberFile {
   public List<Integer> readFileOfNums() {
     List<Integer> list = new ArrayList<>();
     try (
-      FileInputStream fis = new FileInputStream("C:/Tanusha/BOOKS/java/task/input.txt");
-      BufferedReader reader = new BufferedReader(new InputStreamReader(fis));
+      FileInputStream fis = new FileInputStream("C:/Tanusha/BOOKS/java/task/input.txt")
     ) {
-      while (reader.ready()) {
-        list.add(Integer.parseInt(reader.readLine()));
+      while (fis.available() > 0) {
+        String data = new String(fis.readAllBytes());
+        Arrays.stream(data.split("\r\n")).map(Integer::parseInt).forEach(list::add);
       }
 
     } catch (IOException e) {
@@ -24,13 +23,13 @@ public class EvenNumberFile {
     return list;
   }
 
-  public void printEvenNumber(List list) {
-    list.stream().filter(p -> Double.parseDouble(p.toString()) % 2 == 0).forEach(System.out::println);
+  public void evenNumber(List<Integer> list) {
+    Arrays.stream(list.toArray()).map(d -> Double.parseDouble(d.toString())).forEach(d -> System.out.println(d % 2 == 0));
   }
 
   public static void main(String[] args) {
     EvenNumberFile evenNumberFile = new EvenNumberFile();
     List<Integer> list = evenNumberFile.readFileOfNums();
-    evenNumberFile.printEvenNumber(list);
+    evenNumberFile.evenNumber(list);
   }
 }
