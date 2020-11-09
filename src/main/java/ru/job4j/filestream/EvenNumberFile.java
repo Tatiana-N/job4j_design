@@ -10,7 +10,7 @@ public class EvenNumberFile {
   public List<Integer> readFileOfNums() {
     List<Integer> list = new ArrayList<>();
     try (
-      FileInputStream fis = new FileInputStream("C:/Tanusha/BOOKS/java/task/input.txt")
+      FileInputStream fis = new FileInputStream("input.txt")
     ) {
       while (fis.available() > 0) {
         String data = new String(fis.readAllBytes());

@@ -30,8 +30,8 @@ public class LogFilter {
   }
 
   public static void main(String[] args) {
-    List<String> log = filter("C:/Tanusha/BOOKS/java/task/input2.txt");
-    save(log, "C:/Tanusha/BOOKS/java/task/result2.txt");
+    List<String> log = filter("input2.txt");
+    save(log, "result2.txt");
 
   }
 }

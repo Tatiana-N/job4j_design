@@ -7,23 +7,29 @@ public class ResultFile {
   private String fileName;
 
   public static void main(String[] args) {
-    ResultFile resultFile = new ResultFile("C:/Tanusha/BOOKS/java/task/result.txt");
+    ResultFile resultFile = new ResultFile("result.txt");
+    resultFile.writeInFile(resultFile.multiplicationTableInString());
+  }
+
+  public String multiplicationTableInString() {
+    StringBuilder result = new StringBuilder();
     for (int i = 0; i < 10; i++) {
       if (i != 0) {
-        resultFile.writeInFile("\t" + i);
+        result.append("\t").append(i);
       } else {
-        resultFile.writeInFile("\t");
+        result.append("\t");
       }
       for (int j = 1; j < 10; j++) {
-        String multiply = " \t" + i * j;
+
         if (i == 0) {
-          resultFile.writeInFile("\t" + j);
+          result.append("\t").append(j);
         } else {
-          resultFile.writeInFile(multiply);
+          result.append(" \t").append(i * j);
         }
       }
-      resultFile.writeInFile("\n\n");
+      result.append("\n\n");
     }
+    return result.toString();
   }
 
   public ResultFile(String fileName) {
