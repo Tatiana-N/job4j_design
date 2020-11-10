@@ -1,37 +1,27 @@
 package ru.job4j.analize;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Analize {
   public Info diff(List<User> previous, List<User> current) {
-    Map<Integer, String> prev = new HashMap<>();
-    Map<Integer, String> cur = new HashMap<>();
-
-    for (User user : current) {
-      cur.put(user.id, user.name);
-    }
+    Map<Integer, String> changes = new HashMap<>();
     Info info = new Info();
     for (User user : previous) {
-      prev.put(user.id, user.name);
+      changes.put(user.id, user.name);
     }
-
-    for (Integer id : prev.keySet()) {
-      if (cur.containsKey(id)) {
-        if (!cur.get(id).equals(prev.get(id))) {
+    for (User user : current) {
+      if (changes.containsKey(user.id)) {
+        if (!changes.get(user.id).equals(user.name)) {
           info.changed++;
         }
       }
     }
-    Map<Integer, String> prev2 = new HashMap<>(prev);
-    prev.keySet().removeAll(cur.keySet());
-    info.deleted = prev.size();
-    cur.keySet().removeAll(prev2.keySet());
-    info.added = cur.size();
+    List<User> prev2 = new ArrayList<>(previous);
+    previous.removeAll(current);
+    info.deleted = previous.size();
+    current.removeAll(prev2);
+    info.added = current.size();
     return info;
-
   }
 
   public static class User {
@@ -41,6 +31,23 @@ public class Analize {
     public User(int id, String name) {
       this.id = id;
       this.name = name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (!(o instanceof User)) {
+        return false;
+      }
+      User user = (User) o;
+      return id == user.id;
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(id);
     }
   }
 
@@ -67,7 +74,7 @@ public class Analize {
     previous.add(new User(5, "kad")); //
     curent.add(new User(1, "Fan")); //changed
     curent.add(new User(3, "had")); //
-    curent.add(new User(6, "Fad")); //added
+    curent.add(new User(4, "Fad")); //added
     curent.add(new User(5, "Fad")); //changed
     curent.add(new User(8, "Fad")); //added
 
