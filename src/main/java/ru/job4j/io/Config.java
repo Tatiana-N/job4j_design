@@ -17,7 +17,9 @@ public class Config {
   public void load() {
     StringJoiner out = new StringJoiner(System.lineSeparator());
     try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-      read.lines().filter(line -> !line.isEmpty() && line.contains("=")).forEach(x -> values.put(x.split("=")[0], x.split("=")[1]));
+      read.lines().filter(line -> !line.isEmpty() && line.strip().charAt(0) != '#').
+        filter(x -> x.split("=").length == 2).map(x -> x.split("=")).forEach(x -> values.put(x[0], x[1]));
+
     } catch (Exception e) {
       e.printStackTrace();
     }

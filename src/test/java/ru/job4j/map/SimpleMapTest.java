@@ -42,7 +42,6 @@ public class SimpleMapTest {
     Iterator<Integer> it = map.iterator();
     while (it.hasNext()) {
       Integer k = it.next();
-      //  map.insert(4,"ij");
       System.out.println(k + " " + map.get(k));
     }
   }
