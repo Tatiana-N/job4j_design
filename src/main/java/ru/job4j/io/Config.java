@@ -8,7 +8,7 @@ import java.util.StringJoiner;
 
 public class Config {
   private final String path;
-  private final Map<String, String> values = new HashMap<String, String>();
+  private final Map<String, String> values = new HashMap<>();
 
   public Config(final String path) {
     this.path = path;
@@ -17,8 +17,8 @@ public class Config {
   public void load() {
     StringJoiner out = new StringJoiner(System.lineSeparator());
     try (BufferedReader read = new BufferedReader(new FileReader(this.path))) {
-      read.lines().filter(line -> !line.isEmpty() && line.strip().charAt(0) != '#').
-        filter(x -> x.split("=").length == 2).map(x -> x.split("=")).forEach(x -> values.put(x[0], x[1]));
+      read.lines().filter(line -> !line.isEmpty() && line.strip().charAt(0) != '#')
+        .map(x -> x.split("=")).filter(x -> x.length == 2).forEach(x -> values.put(x[0], x[1]));
 
     } catch (Exception e) {
       e.printStackTrace();

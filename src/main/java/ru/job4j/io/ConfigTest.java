@@ -24,7 +24,7 @@ public class ConfigTest {
     Config config = new Config(path);
     config.load();
     assertThat(
-      config.value(" #hibernate.connection2.username"),
+      config.value("hibernate.connection.username"),
       is("postgres")
     );
   }
