@@ -27,19 +27,26 @@ public class Application2 {
     Set<String> theSameUsers = new HashSet<>();
     Map<String, String> mapKMailVUser = new HashMap<>();
     Map<String, Set<String>> mapKUserVSetMails = new HashMap<>();
+    Set<String> mailsSet = null;
     Iterator<User> it = set.iterator();
     while (it.hasNext()) {
       User user = it.next();
-      for (String mail : user.getMails()) {
-        theSameUsers.add(mapKMailVUser.put(mail, user.getName()));
-      }
+     if (!user.getMails().stream().anyMatch(mailsSet::contains)){
+
+       for (String mail : user.getMails()) {
+         if(mapKMailVUser.containsKey(mail)){
+                 }
+         theSameUsers.add(mapKMailVUser.put(mail, user.getName()));
+       }
+     }
+
       mapKUserVSetMails.put(user.getName(), user.getMails());
       for (String n : theSameUsers) {
         if (mapKUserVSetMails.containsKey(n)) {
           mapKUserVSetMails.get(user.getName()).addAll(mapKUserVSetMails.get(n));
           mapKUserVSetMails.remove(n);
         }
-      }
+      } theSameUsers.clear();
     }
     for (String f : mapKUserVSetMails.keySet()) {
       System.out.print(f + " " + mapKUserVSetMails.get(f));
