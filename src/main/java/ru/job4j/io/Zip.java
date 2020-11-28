@@ -10,21 +10,16 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
 public class Zip {
-  public void packFiles(List<Path> sources, File target) {
+  public void packFiles(List<Path> sources, File target) throws IOException {
+    ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
     for (Path source : sources) {
-      packSingleFile(source.toFile(), target);
-    }
-  }
-
-  public void packSingleFile(File source, File target) {
-    try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
-      zip.putNextEntry(new ZipEntry(source.getPath()));
-      try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source))) {
+      zip.putNextEntry(new ZipEntry(source.toString()));
+      BufferedInputStream out =  new BufferedInputStream(new FileInputStream(source.toFile()));
         zip.write(out.readAllBytes());
-      }
-    } catch (Exception e) {
-      e.printStackTrace();
+      out.close();
     }
+    zip.close();
+
   }
 
   public static void main(String[] args) throws IOException {
