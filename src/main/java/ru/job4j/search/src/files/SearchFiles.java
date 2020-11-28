@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Predicate;
 
-public class SearchFiles extends SimpleFileVisitor {
+public class SearchFiles<T> extends SimpleFileVisitor<T> {
   private List<Path> paths;
   Predicate predicate;
 
@@ -23,14 +23,9 @@ public class SearchFiles extends SimpleFileVisitor {
   }
 
   @Override
-  public FileVisitResult visitFile(Object file, BasicFileAttributes attrs) throws IOException {
-    if (file instanceof Path) {
-      if (((Path) file).toFile().isFile()) {
-        if (predicate.test(file)) {
-          paths.add(((Path) file).toAbsolutePath());
-
-        }
-      }
+  public FileVisitResult visitFile(T file, BasicFileAttributes attrs) throws IOException {
+    if (predicate.test(file)) {
+      paths.add(((Path) file).toAbsolutePath());
     }
     return super.visitFile(file, attrs);
   }
