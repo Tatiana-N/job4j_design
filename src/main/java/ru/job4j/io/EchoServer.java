@@ -6,6 +6,8 @@ import java.net.Socket;
 
 public class EchoServer {
   public static void main(String[] args) throws IOException {
+    DispatchPatternForServer dss = new DispatchPatternForServer();
+    dss.init();
     try (ServerSocket server = new ServerSocket(9000)) {
       while (true) {
         Socket socket = server.accept();
@@ -14,8 +16,6 @@ public class EchoServer {
                new InputStreamReader(socket.getInputStream()))) {
           String answer = "";
           String str;
-          DispatchPatternForServer dss = new DispatchPatternForServer();
-          dss.init();
           while (!(str = in.readLine()).isEmpty()) {
             if (str.contains("msg")) {
               answer = dss.check(str.substring(str.lastIndexOf("=") + 1, str.indexOf("HTTP") - 1));
