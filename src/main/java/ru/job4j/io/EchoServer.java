@@ -14,11 +14,13 @@ public class EchoServer {
                new InputStreamReader(socket.getInputStream()))) {
           String answer = "";
           String str;
+          DispatchPatternForServer dss = new DispatchPatternForServer();
+          dss.init();
           while (!(str = in.readLine()).isEmpty()) {
             if (str.contains("msg")) {
-              answer = str.substring(str.lastIndexOf("=") + 1, str.indexOf("HTTP") - 1);
+              answer = dss.check(str.substring(str.lastIndexOf("=") + 1, str.indexOf("HTTP") - 1));
             }
-            if (str.contains("msg=Bye ")) {
+            if (!dss.getFlag()) {
               out.write("HTTP/1.1 200 OK\r\n\\".getBytes());
               server.close();
               return;
