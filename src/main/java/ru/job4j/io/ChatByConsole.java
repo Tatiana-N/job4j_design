@@ -2,43 +2,33 @@ package ru.job4j.io;
 
 import java.io.*;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Scanner;
 
 public class ChatByConsole {
   private ArgZip argZip;
   private ArrayList<String> chat;
+  private ArrayList<String> answers;
   private DispatchPattern dp;
-  long numOfLines = 0;
-  int rand = 0;
 
   public ChatByConsole(String[] args) {
     chat = new ArrayList<>(50); //список для записи чата
+    answers = new ArrayList<>(50);
     String[] newArgs = Arrays.copyOf(args, args.length + 1);
     newArgs[args.length] = "-e="; // костыль для использования уже написанного класса ArgZip
     this.argZip = new ArgZip(newArgs);
-    try (
-      Stream<String> lines = Files.lines(new File(argZip.directory()).toPath())
-    ) {
-      numOfLines = lines.count(); // посчитаем строки в файле ответов
-    } catch (FileNotFoundException e) {
-      e.printStackTrace();
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+    readAnswers();
     dp = new DispatchPattern();
     dp.init();
   }
 
-  public void run() throws IOException {
-
+  public void run() {
     Scanner scanner = new Scanner(System.in);
-    String answer = "";
+    String answer;
     String userText = scanner.nextLine();
     while (dp.check(userText)) {
-      answer = this.returnAnswer(userText);
+      answer = this.returnAnswer(answers);
       this.addString(userText);
       if (!answer.isEmpty()) {
         System.out.println(answer);
@@ -49,38 +39,41 @@ public class ChatByConsole {
     writeDialogInFile();
   }
 
-  public static void main(String[] args) throws IOException {
+  private String returnAnswer(ArrayList<String> answers) {
+    if (dp.getFlag()) {
+      int rand = (int) (Math.random() * answers.size()); // рандомный номер строки
+      return answers.get(rand);
+    } else {
+      return "";
+    }
+  }
+
+  public static void main(String[] args) {
 
     ChatByConsole chatByConsole = new ChatByConsole(args);
     chatByConsole.run();
   }
 
-  private String returnAnswer(String userText) {
-    String answer = "";
-    if (dp.getFlag()) {
-      rand = (int) (Math.random() * numOfLines); // рандомный номер строки
-      try (BufferedReader bR = new BufferedReader(new FileReader(argZip.directory()))) {
-        while (rand-- > 0) {
-          answer = bR.readLine();
-        }
-      } catch (Exception e) {
-        e.printStackTrace();
+  private void readAnswers() {
+    try (BufferedReader bR = new BufferedReader(new FileReader(argZip.directory()))) {
+      while (bR.ready()) {
+        answers.add(bR.readLine());
       }
+    } catch (Exception e) {
+      e.printStackTrace();
     }
-    return answer;
   }
 
   private void addString(String elseString) {
     this.chat.add(elseString);
   }
 
-  private String getAllDialog() {
-    return chat.stream().map(p -> p + "\n").collect(Collectors.joining());
-  }
-
-  private boolean writeDialogInFile() throws IOException {
+  private boolean writeDialogInFile() {
     try (BufferedWriter bW = new BufferedWriter(new FileWriter(argZip.output(), Charset.forName("WINDOWS-1251")))) {
-      bW.write(getAllDialog());
+      for (String chatPhrase : chat) {
+        bW.write(chatPhrase);
+        bW.newLine();
+      }
     } catch (Exception e) {
       e.printStackTrace();
     }
