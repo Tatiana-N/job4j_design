@@ -16,16 +16,17 @@ public class Zip {
   private final File fileOut;
   private final ArgZip argZip;
 
-  private void packFiles(List<Path> sources, File target) throws IOException {
-    ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)));
-    for (Path source : sources) {
-      zip.putNextEntry(new ZipEntry(source.toString()));
-      BufferedInputStream out = new BufferedInputStream(new FileInputStream(source.toFile()));
-      zip.write(out.readAllBytes());
-      out.close();
+  private void packFiles(List<Path> sources, File target) {
+    try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
+      for (Path source : sources) {
+        zip.putNextEntry(new ZipEntry(source.toString()));
+        BufferedInputStream out = new BufferedInputStream(new FileInputStream(source.toFile()));
+        zip.write(out.readAllBytes());
+        out.close();
+      }
+    } catch (IOException e) {
+      e.printStackTrace();
     }
-    zip.close();
-
   }
 
   public Zip(String[] args) {
@@ -34,24 +35,13 @@ public class Zip {
       start = Paths.get(argZip.directory());
     }
     fileOut = new File(argZip.output());
-    if (!fileOut.getAbsoluteFile().exists()) {
-      try {
-        fileOut.createNewFile();
-      } catch (IOException e) {
-        e.printStackTrace();
-      }
-    }
   }
 
-  public void packingFiles() {
-    try {
-      packFiles(this.getList(start, path -> !path.toString().contains(argZip.exclude())), fileOut);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
+  public void packingFiles() throws IOException {
+    packFiles(this.getList(start, path -> !path.toString().contains(argZip.exclude())), fileOut);
   }
 
-  public static void main(String[] args) {
+  public static void main(String[] args) throws IOException {
     Zip zip = new Zip(args);
     zip.packingFiles();
   }
