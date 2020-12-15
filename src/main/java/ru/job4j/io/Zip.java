@@ -20,9 +20,11 @@ public class Zip {
     try (ZipOutputStream zip = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(target)))) {
       for (Path source : sources) {
         zip.putNextEntry(new ZipEntry(source.toString()));
-        BufferedInputStream out = new BufferedInputStream(new FileInputStream(source.toFile()));
-        zip.write(out.readAllBytes());
-        out.close();
+        try (BufferedInputStream out = new BufferedInputStream(new FileInputStream(source.toFile()))) {
+          zip.write(out.readAllBytes());
+        } catch (IOException e) {
+          e.printStackTrace();
+        }
       }
     } catch (IOException e) {
       e.printStackTrace();
