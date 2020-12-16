@@ -1,11 +1,16 @@
 package ru.job4j.io;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
 public class EchoServer {
-  public static void main(String[] args) throws IOException {
+  private static final Logger LOG = LoggerFactory.getLogger(UsageLog4j.class.getName());
+
+  public static void main(String[] args) {
     DispatchPatternForServer dss = new DispatchPatternForServer();
     dss.init();
     try (ServerSocket server = new ServerSocket(9000)) {
@@ -33,6 +38,8 @@ public class EchoServer {
           out.flush();
         }
       }
+    } catch (IOException e) {
+      LOG.error("java.io.IOException – if an I/O error occurs when opening the socket.", e);
     }
   }
 }
