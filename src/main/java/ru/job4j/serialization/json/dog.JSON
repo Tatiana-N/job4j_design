@@ -1,0 +1,16 @@
+{
+    "name": "Дядя Ваня",
+    "age": 39,
+    "isMarried": false,
+  "dog": {
+    "name": "Шарик",
+    "age": 3,
+    "isHomeless": false,
+    "kids": [
+      "Pop",
+      "Pip",
+      "Don",
+      "Sara"
+    ]
+  }
+}
