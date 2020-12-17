@@ -40,4 +40,12 @@ public class Dog {
       + ", kids : " + Arrays.stream(kids).collect(Collectors.joining("\" , \"", "[\"", "\"]"))
       + "}";
   }
+
+  public String getName() {
+    return name;
+  }
+
+  public int getAge() {
+    return age;
+  }
 }

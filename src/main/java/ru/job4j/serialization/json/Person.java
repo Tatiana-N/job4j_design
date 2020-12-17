@@ -20,6 +20,18 @@ public class Person {
     isMarried = married;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public int getAge() {
+    return age;
+  }
+
+  public Dog getDog() {
+    return dog;
+  }
+
   @Override
   public String toString() {
       return "{"
