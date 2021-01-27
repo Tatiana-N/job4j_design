@@ -17,6 +17,7 @@ public class TestApp {
   Set<String> emailsMasha = new HashSet<>();
   Set<String> emailsMary = new HashSet<>();
   HashMap<String, Set<String>> emailsAccount = new HashMap<>();
+  HashMap<String, Set<String>> emailsAccount2 = new HashMap<>();
 
   @Test
 
@@ -34,15 +35,44 @@ public class TestApp {
     emailsAccount.put("Viktoria", emailsViktoria);
     emailsAccount.put("Ekaterina", emailsEkaterina);
     emailsAccount.put("Masha", emailsMasha);
+    Set<String> s1 = new HashSet<>();
+    s1.add("Masha");
+    emailsAccount2.put("aaa@bbb.ru", s1);
+    Set<String> s2 = new HashSet<>();
+    s2.add("Masha");
+    s2.add("Viktoria");
+    emailsAccount2.put("ups@pisem.net", s2);
+    Set<String> s3 = new HashSet<>();
+    s3.add("Ekaterina");
+
+    emailsAccount2.put("vasya@pupkin.com", s3);
+    Set<String> s4 = new HashSet<>();
+    s4.add("Ekaterina");
+
+    emailsAccount2.put("xyz@pisem.net", s4);
+
+    Set<String> s5 = new HashSet<>();
+    s5.add("Evgeny");
+
+    emailsAccount2.put("lol@mail.ru", s5);
+
+    Set<String> s6 = new HashSet<>();
+    s6.add("Evgeny");
+    emailsAccount2.put("xxx@ya.ru", s6);
+
+    Set<String> s7 = new HashSet<>();
+    s7.add("Evgeny");
+    s7.add("Viktoria");
+    emailsAccount2.put("foo@gmail.com", s7);
   }
 
   @Test
 
-  public void whenSomeUsersHaveSameEmailThenNewSize() {
+  public void whenSomeUsersHaveSameEmailThenNewSize2variant() {
     get();
     NotMy email = new NotMy();
     System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
-    emailsAccount.entrySet().stream().forEach(t-> System.out.println(t.getKey() + " " + t.getValue()));
+    emailsAccount.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
     Map<String, Set<String>> result = email.changeMap2(emailsAccount);
     List<String> users = new ArrayList<>(result.keySet());
     String user = users.get(0);
@@ -54,14 +84,55 @@ public class TestApp {
 
   @Test
 
-  public void whenSomeUsersHaveSameEmailThenSizeTwo() {
+  public void change3variant() { //
+    get();
+    NotMy email = new NotMy();
+    System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
+    emailsAccount2.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
+    Map<String, Set<String>> result = email.unionEmailsByMapEmailUsers(emailsAccount2);
+    List<String> users = new ArrayList<>(result.keySet());
+    String user = users.get(0);
+    System.out.println(ANSI_RESET + ANSI_PURPLE + " Итоговые данные: ");
+    result.forEach((key, value) -> System.out.println(key + " " + value));
+    assertThat(result.get(user).size(), is(5));
+
+  }
+
+  @Test
+
+  public void whenSomeUsersHaveSameEmailThenSizeTwo1variant() {
     get();
     emailsMary.add("xyz@pisem.net");
     emailsAccount.put("Mary", emailsMary);
     NotMy email = new NotMy();
+    System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
+    emailsAccount.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
     Map<String, Set<String>> result = email.unionEmails(emailsAccount);
+    System.out.println(ANSI_RESET + ANSI_PURPLE + " Итоговые данные: ");
+    result.forEach((key, value) -> System.out.println(key + " " + value));
     List<String> users = new ArrayList<>(result.keySet());
    // String user = users.get(0);
+    assertThat(result.size(), is(2));
+
+  }
+  
+  @Test
+
+  public void whenSomeUsersHaveSameEmailThenSizeTwo3variant() {
+    get();
+    Set<String> s6 = new HashSet<>();
+    s6.add("Mary");
+    s6.add("Ekaterina");
+
+    emailsAccount2.put("xyz@pisem.net", s6);
+    NotMy email = new NotMy();
+    System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
+    emailsAccount2.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
+    Map<String, Set<String>> result = email.unionEmailsByMapEmailUsers(emailsAccount2);
+    System.out.println(ANSI_RESET + ANSI_PURPLE + " Итоговые данные: ");
+    result.forEach((key, value) -> System.out.println(key + " " + value));
+    List<String> users = new ArrayList<>(result.keySet());
+    // String user = users.get(0);
     assertThat(result.size(), is(2));
 
   }
