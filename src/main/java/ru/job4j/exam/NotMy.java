@@ -1,7 +1,9 @@
 package ru.job4j.exam;
 
 import java.util.*;
+
 import java.util.stream.Collectors;
+
 
 public class NotMy {
   public Map<String, Set<String>> unionEmails(HashMap<String, Set<String>> emailAccounts) {
