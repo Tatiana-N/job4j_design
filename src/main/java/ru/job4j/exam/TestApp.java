@@ -22,7 +22,6 @@ public class TestApp {
 
   HashMap<String, Set<String>> emailsAccount2 = new HashMap<>();
 
-
   @Test
   public void get() {
     emailsEvgeniy.add("xxx@ya.ru");
@@ -68,7 +67,7 @@ public class TestApp {
     get();
     NotMy email = new NotMy();
     System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
-    emailsAccount.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
+    emailsAccount.forEach((key1, value1) -> System.out.println(key1 + "\t" + value1));
     Map<String, Set<String>> result = email.changeMap2(emailsAccount);
     List<String> users = new ArrayList<>(result.keySet());
     String user = users.get(0);
@@ -126,5 +125,30 @@ public class TestApp {
     // String user = users.get(0);
     assertThat(result.size(), is(2));
 
+  }
+
+  public static void main(String[] args) {
+    Map<String, Set<String>> stringSetMap = NotMy.inputAllUsers();
+    System.out.println(ANSI_RESET + ANSI_GREEN + " Начальные данные: ");
+    stringSetMap.entrySet().stream().forEach(t -> System.out.println(t.getKey() + "\t" + t.getValue()));
+    Map<String, Set<String>> result = NotMy.unionEmailsByMapEmailUsers(stringSetMap);
+    System.out.println(ANSI_RESET + ANSI_PURPLE + " Итоговые данные: ");
+    result.forEach((key, value) -> System.out.println(key + " " + value));
+    List<String> users = new ArrayList<>(result.keySet());
+    assertThat(result.size(), is(2));
+    /*
+    Ekaterina vasya@pupkin.com xyz@pisem.net
+    Evgeny lol@mail.ru, xxx@ya.ru foo@gmail.com
+    Mary xyz@pisem.net
+    Masha aaa@bbb.ru ups@pisem.net
+    Vika ups@pisem.net foo@gmail.com
+
+    user1 email1 email2 email3
+    user2 email4 email5
+    user3 email6 email7
+    user4 email5
+    user5 email2 email4
+
+    */
   }
 }
