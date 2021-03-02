@@ -19,7 +19,7 @@ public class Finder {
     public Set<Path> findIt() {
         Path root = Paths.get(directory);
         MySimpleFileVisitor mySimpleFileVisitor = null;
-        switch (howToSearch){
+        switch (howToSearch) {
             case "mask" -> mySimpleFileVisitor = findByMask();
             case "name" -> mySimpleFileVisitor = findByFileName();
             case "regular" -> mySimpleFileVisitor = findByRegular();
@@ -43,7 +43,7 @@ public class Finder {
         MySimpleFileVisitor mySimpleFileVisitor;
         if (lookingFor.startsWith("*") && lookingFor.endsWith("*")) {
             mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().contains(lookingFor.replaceAll("\\*", "")));
-        } else if (lookingFor.startsWith("*")){
+        } else if (lookingFor.startsWith("*")) {
             mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().endsWith(lookingFor.replaceAll("\\*", "")));
         } else {
             mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().startsWith(lookingFor.replaceAll("\\*", "")));
@@ -52,7 +52,7 @@ public class Finder {
     }
 
     private MySimpleFileVisitor findByRegular() {
-return null;
+        return null;
     }
 }
 
