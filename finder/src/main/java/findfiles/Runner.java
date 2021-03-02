@@ -1,20 +1,16 @@
 package findfiles;
 
-import org.junit.runner.RunWith;
-import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
 import java.nio.file.Path;
 import java.util.Set;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 public class Runner {
   @SuppressWarnings("checkstyle:OperatorWrap")
   public static void main(String[] args) {
 
-    Finder finder = Mockito.spy(new Finder());
-    Saver saver = Mockito.spy(new Saver());
-    Validator validator = new Validator();
+    Finder finder = new Finder();//Mockito.spy(new Finder());
+    Saver saver = new Saver();//Mockito.spy(new Saver());
+    Validait validator = new Validait();//Validator validator = new Validator();
 
     if(args.length == 0){
       args = new String[]{"недостаточно параметров","--help"};
@@ -26,14 +22,12 @@ public class Runner {
       switch (key) {
         case "-d" -> finder.setDirectory(value);
         case "-n" -> finder.setLookingFor(value);
-        case "-t" -> finder.setHowToSearch("mask");
+        case "-t" -> finder.setHowToSearch(value);
         case "-o" -> saver.setFileOut(value);
-        case "-f" -> finder.setHowToSearch("file name");
-        case "-r" -> finder.setHowToSearch("regular");
         case "--help" ->
                 System.out.println("-d - директория, в которой начинать поиск.\n" +
                 "-n - имя файла, маска, либо регулярное выражение.\n" +
-                "-m - искать по маске, либо -f - полное совпадение имени. -r регулярное выражение.\n" +
+                "-t - искать по маске\"mask\" полное совпадение имени \"name\" или по регулярному выражению \"regular\".\n" +
                 "-o - результат записать в файл");
         default -> System.out.println(key + " is not a find command. See 'find --help'. ");
       }

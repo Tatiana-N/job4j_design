@@ -1,12 +1,14 @@
 package findfiles;
 
+import lombok.Getter;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Set;
-
+@Getter
 public class Saver {
     File fileOut;
 
