@@ -1,11 +1,11 @@
 package findfiles;
 
-public class Validait {
-    String [] args;
+public class Validator {
+    String[] args;
     Finder finder;
     Saver saver;
 
-    public Validait(String[] args, Finder finder, Saver saver) {
+    public Validator(String[] args, Finder finder, Saver saver) {
         this.args = args;
         this.finder = finder;
         this.saver = saver;
@@ -13,10 +13,6 @@ public class Validait {
     }
 
     private void splitArguments() {
-        if (args.length == 0) {
-            args = new String[]{"недостаточно параметров", "--help"};
-        }
-
         for (String arg : args) {
             String key = arg.split("=")[0];
             String value = arg.split("=")[1];
@@ -33,14 +29,12 @@ public class Validait {
             }
         }
     }
+
     public boolean isValid(Finder finder, Saver saver) throws IllegalArgumentException {
-        try {
-            if (finder.getDirectory() != null && finder.getHowToSearch() != null && finder.getLookingFor() != null && saver.getFileOut() != null) {
-                return true;
-            }
-} catch (IllegalArgumentException e) {
-        System.out.println(e.getMessage() + "\n" + "See 'find --help'. ");
+        if (finder.getDirectory() != null && finder.getHowToSearch() != null && finder.getLookingFor() != null && saver.getFileOut() != null) {
+            return true;
         }
+        System.out.println(" Not enough arguments \n  See 'find --help'. ");
         return false;
     }
 }

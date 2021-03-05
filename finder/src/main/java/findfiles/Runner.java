@@ -10,7 +10,7 @@ public class Runner {
 
         Finder finder = new Finder();//Mockito.spy(new Finder());
         Saver saver = new Saver();//Mockito.spy(new Saver());
-        Validait validator = new Validait(args, finder, saver);//Validator validator = new Validator();
+        Validator validator = new Validator(args, finder, saver);//Validator validator = new Validator();
         if (validator.isValid(finder, saver)) {
             Set<Path> foundFiles = finder.findIt();
             saver.save(foundFiles);
