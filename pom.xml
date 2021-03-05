@@ -10,6 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>finder</module>
+        <module>SQL</module>
     </modules>
 
     <name>job4j_design</name>
