@@ -1,5 +1,5 @@
-package findfiles;
-
+import findfiles.Finder;
+import findfiles.Saver;
 import org.mockito.Mockito;
 
 public class Validator {
