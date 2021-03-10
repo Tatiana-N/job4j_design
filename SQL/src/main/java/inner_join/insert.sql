@@ -1,7 +1,10 @@
---insert into new_bd.public.people (name) values ('Tom');
+insert into new_bd.public.people (name) values ('Tom');
 insert into new_bd.public.people (name) values ('Kate');
 insert into new_bd.public.people(name) values ('Derek');
-insert into new_bd.public.animal(name, people_id) values ('Jery',1);
-insert into new_bd.public.animal (name, people_id) values ('Don',2);
-insert into new_bd.public.animal (name, people_id) values ('Sam',1);
-insert into new_bd.public.animal(name) VALUES ('Peter');
+insert into new_bd.public.type_animal (name) values ('Mouse');
+insert into new_bd.public.type_animal (name) values ('Dog');
+insert into new_bd.public.type_animal (name) values ('Cat');
+insert into new_bd.public.animal(name, people_id,type_animal_id) values ('Jery',1,1);
+insert into new_bd.public.animal (name, people_id,type_animal_id) values ('Don',2,2);
+insert into new_bd.public.animal (name, people_id,type_animal_id) values ('Sam',1,3);
+insert into new_bd.public.animal(name,type_animal_id) VALUES ('Peter',3);
