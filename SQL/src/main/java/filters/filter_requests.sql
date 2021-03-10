@@ -1,0 +1,37 @@
+-- вывести все продукты типа сыр
+select p.name as product
+from product as p
+         join type as t on t.id = p.type_id
+where t.name like 'сыр';
+-- в названии присутстсвует часть
+select name
+from product
+where name like '%ина%';
+-- продукты пропадут в следующем месяце
+select name
+from product
+where expired_date > '2021-04-01'
+  and expired_date < '2021-05-01';
+--самый дорогой продукт
+select name
+from product
+where price = (select max(price) from product);
+--  количество всех продуктов определенного типа.
+select t.name as name, count(*) as quantity
+from type as t
+         join product as p on t.id = p.type_id
+group by t.name;
+--  получение всех продуктов с типом "СЫР" и "МОЛОКО"
+select p.name
+from product as p
+         join type as t on t.id = p.type_id
+where t.name like 'сыр'
+   or t.name like 'молочные продукты';
+-- тип продуктов, которых осталось меньше 3 штук.
+select t.name
+from type as t
+         join product as p on p.type_id = t.id
+group by t.name
+having count(t.name) < 3;
+-- Вывести все продукты и их тип.
+select p.name,t.name from product p join type t on t.id = p.type_id
