@@ -8,10 +8,11 @@ select name
 from product
 where name like '%ина%';
 -- продукты пропадут в следующем месяце
-select name
-from product
-where expired_date > '2021-04-01'
-  and expired_date < '2021-05-01';
+
+SELECT name, expired_date FROM product
+WHERE expired_date >= DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 MONTH' AND
+        expired_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '2 MONTH';
+
 --самый дорогой продукт
 select name
 from product
