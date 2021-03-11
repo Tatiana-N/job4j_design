@@ -12,11 +12,12 @@
 hs_err_pid*
 
 .idea
+.gradle
 .ru.job4j.tasks/
 .tasks/
 tasks/
 *.iml
-
+.properties
 target
 
 out
