@@ -16,3 +16,6 @@ insert into product(name, type_id, expired_date, price) values ('Огурцы',4
 insert into product(name, type_id, expired_date, price) values ('Помидоры',4,'2021-05-20',70);
 insert into product(name, type_id, expired_date, price) values ('Бананы',5,'2021-04-27',50);
 insert into product(name, type_id, expired_date, price) values ('Яблоки',5,'2021-03-16',50);
+insert into product(name, type_id, expired_date, price) values ('Говядина',2,'2021-04-01',500);
+insert into product(name, type_id, expired_date, price) values ('Говядина',2,'2021-05-01',500);
+insert into product(name, type_id, expired_date, price) values ('Гауда',1,'2021-04-29',500);

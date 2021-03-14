@@ -18,7 +18,10 @@ SELECT name, expired_date
 FROM product
 WHERE expired_date >= DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 MONTH'
   AND expired_date < DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '2 MONTH';
-
+SELECT name, expired_date
+FROM product
+WHERE extract(month from expired_date) >= extract(month from DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '1 MONTH')
+  AND extract(month from expired_date) < extract(month from DATE_TRUNC('month', CURRENT_DATE) + INTERVAL '2 MONTH');
 --самый дорогой продукт
 select name
 from product
