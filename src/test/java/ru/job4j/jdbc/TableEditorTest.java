@@ -37,6 +37,7 @@ public class TableEditorTest {
         tableEditor = new TableEditor(properties);
         split = new ArrayList<>();
         tableEditor.createTable(table_name);
+        tableEditor.addColumn(table_name,"name", type);
     }
 
     @After
