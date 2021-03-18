@@ -2,56 +2,80 @@ package ru.job4j.jdbc.tracker;
 
 import org.junit.Before;
 import org.junit.Test;
-import ru.job4j.jdbc.TableEditor;
+import org.junit.jupiter.api.Assertions;
+import ru.job4j.tracker_new.Item;
+import ru.job4j.tracker_new.SQLTracker;
 
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
+import java.util.List;
 
 
 public class SQLTrackerTest {
-    TableEditor tableEditor;
-    String table_name = "store";
-    Properties properties = new Properties();
+    SQLTracker sqlTracker;
+    String new_item = "new_item";
+    String nameForReplace = "replace_name";
 
-    public void beforeAll() {
-         properties = new Properties();
-        try (FileInputStream fis = new FileInputStream("src/main/resources/app.properties")) {
-            properties.load(fis);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     @Before
     public void before() {
-       //beforeAll();
-        TableEditor tableEditor = new TableEditor(properties);
-        tableEditor.createTable(table_name);
-        tableEditor.addColumn(table_name,"name", "varchar(50)");
+        sqlTracker = new SQLTracker();
+        sqlTracker.init();
+        while (sqlTracker.findAll().size() > 0) {
+            sqlTracker.delete(String.valueOf(findFirst().getId()));
+        }
+        sqlTracker.add(new Item("carrot"));
+        sqlTracker.add(new Item("tomato"));
+        sqlTracker.add(new Item("pepper"));
+        sqlTracker.add(new Item("onion"));
     }
+
 
     @Test
     public void add() {
+        Item item = new Item(new_item);
+        sqlTracker.add(item);
+        List<Item> all = sqlTracker.findAll();
+        all.forEach(System.out::println);
+        System.out.println(item);
+        Assertions.assertTrue(all.contains(item));
+    }
 
-SQLTracker sqlTracker = new SQLTracker();
-        sqlTracker.init();
-
-        System.out.println(sqlTracker.add(new Item("Pig")));
+    public Item findFirst() {
+        List<Item> all = sqlTracker.findAll();
+        return all.stream().findFirst().get();
     }
 
     @Test
     public void replace() {
+        Item first = findFirst();
+        sqlTracker.replace(String.valueOf(first.getId()), new Item(nameForReplace));
+        Assertions.assertFalse(sqlTracker.findAll().contains(first));
+        first.setName(nameForReplace);
+        Assertions.assertTrue(sqlTracker.findAll().contains(first));
     }
 
     @Test
     public void delete() {
+        List<Item> all = sqlTracker.findAll();
+        Item first = all.stream().findFirst().get();
+        Assertions.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
+        Assertions.assertFalse(sqlTracker.findAll().contains(first));
     }
 
     @Test
     public void findAll() {
+        List<Item> byName = sqlTracker.findAll();
+        Assertions.assertEquals(byName.size(), 4);
+    }
+
+    @Test
+    public void findById() {
+        Item first = findFirst();
+        Assertions.assertEquals(sqlTracker.findById(String.valueOf(first.getId())), first);
     }
 
     @Test
     public void findByName() {
+        List<Item> byName = sqlTracker.findByName("carrot");
+        Assertions.assertEquals(byName.size(), 1);
+
     }
 }
