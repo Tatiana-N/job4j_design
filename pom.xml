@@ -65,20 +65,13 @@
       <dependency>
           <groupId>org.junit.jupiter</groupId>
           <artifactId>junit-jupiter</artifactId>
-          <version>RELEASE</version>
+          <version>5.7.1</version>
           <scope>test</scope>
-        <exclusions>
-          <exclusion>
-            <groupId>org.junit.vintage</groupId>
-            <artifactId>junit-vintage-engine</artifactId>
-          </exclusion>
-        </exclusions>
       </dependency>
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>RELEASE</version>
-
     </dependency>
   </dependencies>
 

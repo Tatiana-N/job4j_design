@@ -1,6 +1,6 @@
-package ru.job4j.tracker_new;
+package ru.job4j.tracker;
 
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,10 +11,9 @@ public class SQLTracker implements Store {
     private String table_name;
 
     public void init() {
-        Properties config = new Properties();
-        try
-                (FileInputStream fis = new FileInputStream("src/main/resources/tracker.properties")) {
-            config.load(fis);
+        try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
+            Properties config = new Properties();
+            config.load(in);
             Class.forName(config.getProperty("driver-class-name"));
             cn = DriverManager.getConnection(
                     config.getProperty("url"),
@@ -25,15 +24,18 @@ public class SQLTracker implements Store {
         } catch (Exception e) {
             throw new IllegalStateException(e);
         }
+
+
     }
 
     public boolean doExecute(String sql) {
+        boolean result = false;
         try (Statement statement = cn.createStatement()) {
-            statement.execute(sql);
+            result = !statement.execute(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return true;
+        return result;
     }
 
     public int doExecuteUpdate(String sql, String name) {
