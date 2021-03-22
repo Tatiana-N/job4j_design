@@ -30,13 +30,13 @@ public class SQLTracker implements Store {
 
 
     public boolean doExecute(String sql) {
-        int i = -1;
+        int i = 0;
         try (Statement statement = cn.createStatement()) {
             i = statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return i != -1;
+        return i > 0;
     }
 
     public int doExecuteUpdate(String sql, String name) {
