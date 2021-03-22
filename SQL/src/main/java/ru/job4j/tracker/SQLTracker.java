@@ -28,14 +28,15 @@ public class SQLTracker implements Store {
 
     }
 
+
     public boolean doExecute(String sql) {
-        boolean result = false;
+        int i = -1;
         try (Statement statement = cn.createStatement()) {
-            result = !statement.execute(sql);
+            i = statement.executeUpdate(sql);
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return result;
+        return i != -1;
     }
 
     public int doExecuteUpdate(String sql, String name) {
