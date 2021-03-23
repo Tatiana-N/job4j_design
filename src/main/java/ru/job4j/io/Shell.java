@@ -11,30 +11,19 @@ public class Shell {
 
     public void cd(String path) {
         String[] split = path.split("/");
-        if (path.equals("")) {
-            strings.push("/");
-        }
         for (String s : split) {
-            if (s.contains(".")) {
-                while (s.length() != 0) {
-                    s = s.replace(".", "");
-                    strings.pop();
-                }
+            if (s.equals("")) {
+                continue;
+            }
+            if (s.equals("..")) {
+                strings.pop();
             } else {
-                if (s.length() != 0) {
-                    strings.push("/");
-                    strings.push(s);
-                }
+                strings.push(s);
             }
         }
-
-
     }
 
     public String pwd() {
-        if (strings.isEmpty()) {
-            return "/";
-        }
-        return String.join("", strings);
+        return "/" + String.join("/", strings);
     }
 }
