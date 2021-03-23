@@ -55,8 +55,7 @@ public class SQLTracker implements Store {
     }
 
     public ResultSet doExecuteQuery(String sql) {
-        try {
-            PreparedStatement statement = cn.prepareStatement(sql);
+        try (PreparedStatement statement = cn.prepareStatement(sql)) {
             return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
