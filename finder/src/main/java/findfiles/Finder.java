@@ -8,6 +8,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 @Getter
 @Setter
@@ -40,19 +41,13 @@ public class Finder {
     }
 
     private MySimpleFileVisitor findByMask() {
-        MySimpleFileVisitor mySimpleFileVisitor;
-        if (lookingFor.startsWith("*") && lookingFor.endsWith("*")) {
-            mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().contains(lookingFor.replaceAll("\\*", "")));
-        } else if (lookingFor.startsWith("*")) {
-            mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().endsWith(lookingFor.replaceAll("\\*", "")));
-        } else {
-            mySimpleFileVisitor = new MySimpleFileVisitor(t -> t.getFileName().toString().startsWith(lookingFor.replaceAll("\\*", "")));
-        }
-        return mySimpleFileVisitor;
+      lookingFor = lookingFor.replace(".", "\\.").replace("*", ".*");
+            return  findByRegular();
     }
 
     private MySimpleFileVisitor findByRegular() {
-        return null;
+        Pattern pattern = Pattern.compile(lookingFor);
+        return  new MySimpleFileVisitor(t -> pattern.matcher(t.getFileName().toString()).matches());
     }
 }
 
