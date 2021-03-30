@@ -1,8 +1,6 @@
 package ru.job4j.tracker;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -37,14 +35,18 @@ public class SQLTrackerTest {
     public void before() {
         sqlTracker = new SQLTracker(this.init());
         sqlTracker.setTable_name(config.getProperty("table_name"));
-        while (sqlTracker.findAll().size() > 0) {
-            sqlTracker.delete(String.valueOf(findFirst().getId()));
-        }
         sqlTracker.add(new Item("carrot"));
         sqlTracker.add(new Item("tomato"));
         sqlTracker.add(new Item("pepper"));
         sqlTracker.add(new Item("onion"));
     }
+    @AfterEach
+    public void after()
+    {sqlTracker = new SQLTracker(this.init());
+        sqlTracker.setTable_name(config.getProperty("table_name"));
+        while (sqlTracker.findAll().size() > 0) {
+            sqlTracker.delete(String.valueOf(findFirst().getId()));
+        }}
 
 
     @Test

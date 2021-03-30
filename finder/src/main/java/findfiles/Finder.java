@@ -41,7 +41,7 @@ public class Finder {
     }
 
     private MySimpleFileVisitor findByMask() {
-      lookingFor = lookingFor.replace(".", "\\.").replace("*", ".*");
+      lookingFor = lookingFor.replaceAll("\\.", "\\.").replaceAll("\\*", ".*");
             return  findByRegular();
     }
 
