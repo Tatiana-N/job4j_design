@@ -13,6 +13,7 @@ import java.util.Properties;
 
 public class SQLTrackerTest {
     Properties config;
+
     public Connection init() {
         try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
             config = new Properties();
@@ -77,11 +78,13 @@ public class SQLTrackerTest {
         Assertions.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
         Assertions.assertFalse(sqlTracker.findAll().contains(first));
     }
+
     @Test
     public void failDelete() {
         Assertions.assertFalse(sqlTracker.delete("15"));
 
     }
+
     @Test
     public void findAll() {
         List<Item> byName = sqlTracker.findAll();
