@@ -1,33 +1,23 @@
 package ru.job4j.tracker;
 
-import java.io.InputStream;
+import lombok.Getter;
+import lombok.Setter;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+@Getter
+@Setter
 public class SQLTracker implements Store {
     private Connection cn;
     private String table_name;
+    Properties config;
 
-    public void init() {
-        try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
-            Properties config = new Properties();
-            config.load(in);
-            Class.forName(config.getProperty("driver-class-name"));
-            cn = DriverManager.getConnection(
-                    config.getProperty("url"),
-                    config.getProperty("username"),
-                    config.getProperty("password")
-            );
-            table_name = config.getProperty("table_name");
-        } catch (Exception e) {
-            throw new IllegalStateException(e);
-        }
-
-
+    public SQLTracker(Connection cn) {
+        this.cn = cn;
     }
-
 
     public boolean doExecute(String sql) {
         int i = 0;
@@ -55,7 +45,8 @@ public class SQLTracker implements Store {
     }
 
     public ResultSet doExecuteQuery(String sql) {
-        try (PreparedStatement statement = cn.prepareStatement(sql)) {
+        try {
+            PreparedStatement statement = cn.prepareStatement(sql);
             return statement.executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();

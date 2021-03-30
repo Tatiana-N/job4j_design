@@ -1,21 +1,41 @@
 package ru.job4j.tracker;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
 import java.util.List;
+import java.util.Properties;
 
 
 public class SQLTrackerTest {
+    Properties config;
+    public Connection init() {
+        try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
+            config = new Properties();
+            config.load(in);
+            Class.forName(config.getProperty("driver-class-name"));
+            return DriverManager.getConnection(
+                    config.getProperty("url"),
+                    config.getProperty("username"),
+                    config.getProperty("password")
+            );
+        } catch (Exception e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     SQLTracker sqlTracker;
     String new_item = "new_item";
     String nameForReplace = "replace_name";
 
-    @Before
+    @BeforeEach
     public void before() {
-        sqlTracker = new SQLTracker();
-        sqlTracker.init();
+        sqlTracker = new SQLTracker(this.init());
+        sqlTracker.setTable_name(config.getProperty("table_name"));
         while (sqlTracker.findAll().size() > 0) {
             sqlTracker.delete(String.valueOf(findFirst().getId()));
         }
