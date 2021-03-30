@@ -22,7 +22,7 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-             //rd.lines().forEach();
+             rd.lines().forEach((t-> users.add(new User(t.split(";")[0],t.split(";")[1]))));
         }
         return users;
     }
@@ -35,9 +35,9 @@ public class ImportDB {
                 cfg.getProperty("jdbc.password")
         )) {
             for (User user : users) {
-                try (PreparedStatement ps = cnt.prepareStatement("insert info users ...")) {
+                try (PreparedStatement ps = cnt.prepareStatement("insert into users (name, email) values (?,?)")) {
                     ps.setString(1, user.name);
-                    ps.setString(1, user.email);
+                    ps.setString(2, user.email);
                     ps.execute();
                 }
             }
@@ -57,10 +57,10 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        try (FileInputStream in = new FileInputStream("C:\\projects\\job4j_design\\SQL\\src\\main\\resources\\app.properties")) {
+        try (FileInputStream in = new FileInputStream("SQL/src/main/resources/app.properties")) {
             cfg.load(in);
         }
-        ImportDB db = new ImportDB(cfg, "C:\\projects\\job4j_design\\SQL\\src\\main\\resources\\dump.txt");
+        ImportDB db = new ImportDB(cfg, "SQL/src/main/resources/dump.txt");
         db.save(db.load());
     }
 }
