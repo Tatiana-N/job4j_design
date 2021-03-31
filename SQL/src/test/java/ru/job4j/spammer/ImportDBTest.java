@@ -11,6 +11,7 @@ import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -18,6 +19,7 @@ public class ImportDBTest {
     Properties config;
     SQLTracker sqlTracker;
     String nameForReplace = "replace_name";
+    List<Item> list;
 
     public Connection init() {
         try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
@@ -36,63 +38,72 @@ public class ImportDBTest {
 
     @BeforeEach
     public void before() throws SQLException {
+        list = new ArrayList<>();
         sqlTracker = new SQLTracker((ConnectionRollback.create(this.init())));
         sqlTracker.setTable_name(config.getProperty("table_name"));
-        sqlTracker.add(new Item("apple"));
-        sqlTracker.add(new Item("pineapple"));
-        sqlTracker.add(new Item("tomato"));
+        Item apple = new Item("apple");
+        Item pineapple = new Item("pineapple");
+        Item tomato = new Item("tomato");
+        sqlTracker.add(apple);
+        sqlTracker.add(pineapple);
+        sqlTracker.add(tomato);
+        list.add(apple);
+        list.add(pineapple);
+        list.add(tomato);
     }
 
     @Test
-    public void createItem() {
-        sqlTracker.add(new Item("name"));
-    }
-
-    public Item findFirst() {
-        List<Item> all = sqlTracker.findAll();
-        return all.isEmpty() ? null : all.get(0);
+    public void add() {
+        Item name = new Item("name");
+        sqlTracker.add(name);
+        list.add(name);
+        Assertions.assertEquals(list, sqlTracker.findAll());
     }
 
     @Test
     public void replace() {
-        Item first = findFirst();
+        Item first = list.get(0);
         sqlTracker.replace(String.valueOf(first.getId()), new Item(nameForReplace));
         Assertions.assertFalse(sqlTracker.findAll().contains(first));
+        list.remove(first);
         first.setName(nameForReplace);
-        Assertions.assertTrue(sqlTracker.findAll().contains(first));
+        list.add(first);
+        Assertions.assertEquals(list, sqlTracker.findAll());
     }
 
     @Test
     public void delete() {
-        List<Item> all = sqlTracker.findAll();
-        Item first = all.isEmpty() ? null : all.get(0);
-        assert first != null;
+        Item first = list.get(0);
         Assertions.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
         Assertions.assertFalse(sqlTracker.findAll().contains(first));
+        list.remove(first);
+        Assertions.assertEquals(list, sqlTracker.findAll());
     }
 
     @Test
     public void failDelete() {
         Assertions.assertFalse(sqlTracker.delete("15"));
-
     }
 
     @Test
     public void findAll() {
-        List<Item> byName = sqlTracker.findAll();
-        Assertions.assertEquals(byName.size(), 3);
+        List<Item> all = sqlTracker.findAll();
+        Assertions.assertEquals(all.size(), 3);
+        Assertions.assertEquals(list, all);
     }
 
     @Test
     public void findById() {
-        Item first = findFirst();
+        Item first = list.get(0);
         Assertions.assertEquals(sqlTracker.findById(String.valueOf(first.getId())), first);
     }
 
     @Test
     public void findByName() {
-        List<Item> byName = sqlTracker.findByName("tomato");
+        Item first = list.get(0);
+        List<Item> byName = sqlTracker.findByName(first.getName());
         Assertions.assertEquals(byName.size(), 1);
+        Assertions.assertEquals(byName.get(0), first);
 
     }
 }
