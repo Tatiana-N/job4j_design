@@ -40,7 +40,7 @@ public class ImportDBTest {
     public void before() throws SQLException {
         list = new ArrayList<>();
         sqlTracker = new SQLTracker((ConnectionRollback.create(this.init())));
-        sqlTracker.setTable_name(config.getProperty("table_name"));
+        sqlTracker.setTableName(config.getProperty("table_name"));
         Item apple = new Item("apple");
         Item pineapple = new Item("pineapple");
         Item tomato = new Item("tomato");

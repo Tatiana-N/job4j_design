@@ -8,7 +8,6 @@ import java.sql.DriverManager;
 import java.util.List;
 import java.util.Properties;
 
-
 public class SQLTrackerTest {
     Properties config;
 
@@ -28,30 +27,31 @@ public class SQLTrackerTest {
     }
 
     SQLTracker sqlTracker;
-    String new_item = "new_item";
+    String newItem = "new_item";
     String nameForReplace = "replace_name";
 
     @BeforeEach
     public void before() {
         sqlTracker = new SQLTracker(this.init());
-        sqlTracker.setTable_name(config.getProperty("table_name"));
+        sqlTracker.setTableName(config.getProperty("table_name"));
         sqlTracker.add(new Item("carrot"));
         sqlTracker.add(new Item("tomato"));
         sqlTracker.add(new Item("pepper"));
         sqlTracker.add(new Item("onion"));
     }
+
     @AfterEach
-    public void after()
-    {sqlTracker = new SQLTracker(this.init());
-        sqlTracker.setTable_name(config.getProperty("table_name"));
+    public void after() {
+        sqlTracker = new SQLTracker(this.init());
+        sqlTracker.setTableName(config.getProperty("table_name"));
         while (sqlTracker.findAll().size() > 0) {
             sqlTracker.delete(String.valueOf(findFirst().getId()));
-        }}
-
-
+        }
+    }
+    
     @Test
     public void add() {
-        Item item = new Item(new_item);
+        Item item = new Item(newItem);
         sqlTracker.add(item);
         List<Item> all = sqlTracker.findAll();
         all.forEach(System.out::println);

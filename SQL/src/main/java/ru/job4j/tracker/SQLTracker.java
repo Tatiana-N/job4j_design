@@ -12,14 +12,14 @@ import java.util.Properties;
 @Setter
 public class SQLTracker implements Store {
     private Connection cn;
-    private String table_name;
-    Properties config;
+    private String tableName;
+    private Properties config;
 
     public SQLTracker(Connection cn) {
         this.cn = cn;
     }
 
-    public boolean doExecute(String sql) {
+    private boolean doExecute(String sql) {
         int i = 0;
         try (Statement statement = cn.createStatement()) {
             i = statement.executeUpdate(sql);
@@ -29,7 +29,7 @@ public class SQLTracker implements Store {
         return i > 0;
     }
 
-    public int doExecuteUpdate(String sql, String name) {
+    private int doExecuteUpdate(String sql, String name) {
         try (PreparedStatement statement = cn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
             statement.setString(1, name);
             statement.execute();
@@ -44,19 +44,10 @@ public class SQLTracker implements Store {
         return -1;
     }
 
-    public ResultSet doExecuteQuery(String sql) {
-        try {
-            PreparedStatement statement = cn.prepareStatement(sql);
-            return statement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    private List<Item> fromResultSetToItem(ResultSet resultSet) {
+    private List<Item> fromResultSetToItem(String sql) {
         List<Item> list = new ArrayList<>();
-        try {
+        try (PreparedStatement statement = cn.prepareStatement(sql)) {
+            ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
                 String name = resultSet.getString("name");
                 int id1 = resultSet.getInt("id");
@@ -79,39 +70,40 @@ public class SQLTracker implements Store {
 
     @Override
     public Item add(Item item) {
-        int id = doExecuteUpdate(String.format("insert into %s (name) values (?);", table_name), item.getName());
+        int id = doExecuteUpdate(String.format("insert into %s (name) values (?);", tableName), item.getName());
         item.setId(id);
         return item;
     }
 
     @Override
     public boolean replace(String id, Item item) {
-        String sql = String.format("update %s  set name = (?) where id = %s;", table_name, id);
+        String sql = String.format("update %s  set name = (?) where id = %s;", tableName, id);
         int i = doExecuteUpdate(sql, item.getName());
         return i != -1;
     }
 
     @Override
     public boolean delete(String id) {
-        String sql = String.format("delete FROM %s WHERE id = %s;", table_name, id);
+        String sql = String.format("delete FROM %s WHERE id = %s;", tableName, id);
         return doExecute(sql);
     }
 
     @Override
     public List<Item> findAll() {
-        String sql = String.format("select * from %s;", table_name);
-        return fromResultSetToItem(doExecuteQuery(sql));
+        String sql = String.format("select * from %s;", tableName);
+        return fromResultSetToItem(sql);
     }
 
     @Override
     public List<Item> findByName(String key) {
-        String sql = String.format("select * from %s where name = '%s';", table_name, key);
-        return fromResultSetToItem(doExecuteQuery(sql));
+        String sql = String.format("select * from %s where name = '%s';", tableName, key);
+        return fromResultSetToItem(sql);
     }
 
     @Override
     public Item findById(String id) {
-        String sql = String.format("select * from %s where id = %s;", table_name, id);
-        return fromResultSetToItem(doExecuteQuery(sql)).get(0);
+        String sql = String.format("select * from %s where id = %s;", tableName, id);
+        List<Item> items = fromResultSetToItem(sql);
+        return items.isEmpty() ? null : items.get(0);
     }
 }
