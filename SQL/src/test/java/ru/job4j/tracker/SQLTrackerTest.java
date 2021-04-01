@@ -1,6 +1,10 @@
 package ru.job4j.tracker;
 
-import org.junit.jupiter.api.*;
+
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -30,7 +34,7 @@ public class SQLTrackerTest {
     String newItem = "new_item";
     String nameForReplace = "replace_name";
 
-    @BeforeEach
+    @Before
     public void before() {
         sqlTracker = new SQLTracker(this.init());
         sqlTracker.setTableName(config.getProperty("table_name"));
@@ -40,7 +44,7 @@ public class SQLTrackerTest {
         sqlTracker.add(new Item("onion"));
     }
 
-    @AfterEach
+    @AfterClass
     public void after() {
         sqlTracker = new SQLTracker(this.init());
         sqlTracker.setTableName(config.getProperty("table_name"));
@@ -56,7 +60,7 @@ public class SQLTrackerTest {
         List<Item> all = sqlTracker.findAll();
         all.forEach(System.out::println);
         System.out.println(item);
-        Assertions.assertTrue(all.contains(item));
+        Assert.assertTrue(all.contains(item));
     }
 
     public Item findFirst() {
@@ -68,41 +72,41 @@ public class SQLTrackerTest {
     public void replace() {
         Item first = findFirst();
         sqlTracker.replace(String.valueOf(first.getId()), new Item(nameForReplace));
-        Assertions.assertFalse(sqlTracker.findAll().contains(first));
+        Assert.assertFalse(sqlTracker.findAll().contains(first));
         first.setName(nameForReplace);
-        Assertions.assertTrue(sqlTracker.findAll().contains(first));
+        Assert.assertTrue(sqlTracker.findAll().contains(first));
     }
 
     @Test
     public void delete() {
         List<Item> all = sqlTracker.findAll();
         Item first = all.stream().findFirst().get();
-        Assertions.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
-        Assertions.assertFalse(sqlTracker.findAll().contains(first));
+        Assert.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
+        Assert.assertFalse(sqlTracker.findAll().contains(first));
     }
 
     @Test
     public void failDelete() {
-        Assertions.assertFalse(sqlTracker.delete("15"));
+        Assert.assertFalse(sqlTracker.delete("15"));
 
     }
 
     @Test
     public void findAll() {
         List<Item> byName = sqlTracker.findAll();
-        Assertions.assertEquals(byName.size(), 4);
+        Assert.assertEquals(byName.size(), 4);
     }
 
     @Test
     public void findById() {
         Item first = findFirst();
-        Assertions.assertEquals(sqlTracker.findById(String.valueOf(first.getId())), first);
+        Assert.assertEquals(sqlTracker.findById(String.valueOf(first.getId())), first);
     }
 
     @Test
     public void findByName() {
         List<Item> byName = sqlTracker.findByName("carrot");
-        Assertions.assertEquals(byName.size(), 1);
+        Assert.assertEquals(byName.size(), 1);
 
     }
 }
