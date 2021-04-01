@@ -1,9 +1,9 @@
 package ru.job4j.jdbc;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,11 +15,11 @@ import java.util.regex.Pattern;
 
 public class TableEditorTest {
     Properties properties;
-    String table_name = "new_table";
-    String new_column = "new_column";
-    String column_name = " name ";
+    String newTable = "new_table";
+    String newColumn = "new_column";
+    String columnName = " name ";
     String type = "varchar(50)";
-    String old_name = "old_name";
+    String oldName = "old_name";
     TableEditor tableEditor = null;
     Pattern pattern = Pattern.compile("\\w+", Pattern.UNICODE_CHARACTER_CLASS);
     List<String> split;
@@ -36,61 +36,61 @@ public class TableEditorTest {
         }
         tableEditor = new TableEditor(properties);
         split = new ArrayList<>();
-        tableEditor.createTable(table_name);
-        tableEditor.addColumn(table_name,"name", type);
+        tableEditor.createTable(newTable);
+        tableEditor.addColumn(newTable, "name", type);
     }
 
     @After
     public void dropTable() {
         split = new ArrayList<>();
-        tableEditor.dropTable(table_name);
-        Matcher matcher = pattern.matcher(tableEditor.getScheme(table_name));
+        tableEditor.dropTable(newTable);
+        Matcher matcher = pattern.matcher(tableEditor.getScheme(newTable));
         while (matcher.find()) {
             split.add(matcher.group());
         }
-        Assertions.assertEquals(split.size(), 2);
-        Assertions.assertEquals(split.get(0), "column");
-        Assertions.assertEquals(split.get(1), "type");
+        Assert.assertEquals(split.size(), 2);
+        Assert.assertEquals(split.get(0), "column");
+        Assert.assertEquals(split.get(1), "type");
     }
 
     @Test
     public void createTable() {
-        Matcher matcher = pattern.matcher(tableEditor.getScheme(table_name));
+        Matcher matcher = pattern.matcher(tableEditor.getScheme(newTable));
         while (matcher.find()) {
             split.add(matcher.group());
         }
-        Assertions.assertEquals(split.size(), 6);
+        Assert.assertEquals(split.size(), 6);
     }
 
     @Test
     public void addColumn() {
-        tableEditor.addColumn(table_name, new_column, type);
-        Matcher matcher = pattern.matcher(tableEditor.getScheme(table_name));
+        tableEditor.addColumn(newTable, newColumn, type);
+        Matcher matcher = pattern.matcher(tableEditor.getScheme(newTable));
         while (matcher.find()) {
             split.add(matcher.group());
         }
-        Assertions.assertTrue(split.contains(new_column));
-        Assertions.assertFalse(split.contains(type));
+        Assert.assertTrue(split.contains(newColumn));
+        Assert.assertFalse(split.contains(type));
     }
 
     @Test
     public void dropColumn() {
-        tableEditor.dropColumn(table_name, column_name);
-        Matcher matcher = pattern.matcher(tableEditor.getScheme(table_name));
+        tableEditor.dropColumn(newTable, columnName);
+        Matcher matcher = pattern.matcher(tableEditor.getScheme(newTable));
         while (matcher.find()) {
             split.add(matcher.group());
         }
-        Assertions.assertFalse(split.contains(column_name));
+        Assert.assertFalse(split.contains(columnName));
     }
 
     @Test
     public void renameColumn() {
-        tableEditor.renameColumn(table_name, column_name, old_name);
-        Matcher matcher = pattern.matcher(tableEditor.getScheme(table_name));
+        tableEditor.renameColumn(newTable, columnName, oldName);
+        Matcher matcher = pattern.matcher(tableEditor.getScheme(newTable));
         while (matcher.find()) {
             split.add(matcher.group());
         }
-        Assertions.assertTrue(split.contains(old_name));
-        Assertions.assertFalse(split.contains(column_name));
+        Assert.assertTrue(split.contains(oldName));
+        Assert.assertFalse(split.contains(columnName));
     }
 }

@@ -22,7 +22,7 @@ public class ImportDB {
     public List<User> load() throws IOException {
         List<User> users = new ArrayList<>();
         try (BufferedReader rd = new BufferedReader(new FileReader(dump))) {
-             rd.lines().forEach((t-> users.add(new User(t.split(";")[0],t.split(";")[1]))));
+            rd.lines().forEach((t -> users.add(new User(t.split(";")[0], t.split(";")[1]))));
         }
         return users;
     }
@@ -53,7 +53,6 @@ public class ImportDB {
             this.email = email;
         }
     }
-
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();

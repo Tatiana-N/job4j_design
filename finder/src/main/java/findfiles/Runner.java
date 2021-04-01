@@ -8,9 +8,9 @@ public class Runner {
     @SuppressWarnings("checkstyle:OperatorWrap")
     public static void main(String[] args) {
 
-        Finder finder = new Finder();//Mockito.spy(new Finder());
-        Saver saver = new Saver();//Mockito.spy(new Saver());
-        Validator validator = new Validator(args, finder, saver);//Validator validator = new Validator();
+        Finder finder = new Finder(); //Mockito.spy(new Finder());
+        Saver saver = new Saver(); //Mockito.spy(new Saver());
+        Validator validator = new Validator(args, finder, saver); //Validator validator = new Validator();
         if (validator.isValid(finder, saver)) {
             Set<Path> foundFiles = finder.findIt();
             saver.save(foundFiles);

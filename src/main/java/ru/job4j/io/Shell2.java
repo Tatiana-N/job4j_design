@@ -15,21 +15,26 @@ public class Shell2 {
         strings.push("/");
         for (String s : split) {
             if (s.equals("/")) {
-                if (!stringBuilder.toString().equals("")) strings.push(stringBuilder.toString());
-                stringBuilder = new StringBuilder();
-                continue;
-
+                if (!stringBuilder.toString().equals("")) {
+                    strings.push(stringBuilder.toString());
+                    stringBuilder = new StringBuilder();
+                    continue;
+                }
             }
             if (s.equals(".")) {
-                if (!stringBuilder.toString().equals("")) strings.push(stringBuilder.toString());
-                stringBuilder = new StringBuilder();
-                strings.pop();
+                if (!stringBuilder.toString().equals("")) {
+                    strings.push(stringBuilder.toString());
+                    stringBuilder = new StringBuilder();
+                    strings.pop();
+                }
             } else {
                 stringBuilder.append(s);
             }
 
         }
-        if (!stringBuilder.toString().equals("")) strings.push(stringBuilder.toString());
+        if (!stringBuilder.toString().equals("")) {
+            strings.push(stringBuilder.toString());
+        }
     }
 
     public String pwd() {

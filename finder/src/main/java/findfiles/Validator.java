@@ -17,15 +17,26 @@ public class Validator {
             String key = arg.split("=")[0];
             String value = arg.split("=")[1];
             switch (key) {
-                case "-d" -> finder.setDirectory(value);
-                case "-n" -> finder.setLookingFor(value);
-                case "-t" -> finder.setHowToSearch(value);
-                case "-o" -> saver.setFileOut(value);
-                case "--help" -> System.out.println("-d - директория, в которой начинать поиск.\n" +
-                        "-n - имя файла, маска, либо регулярное выражение.\n" +
-                        "-t - искать по маске\"mask\" полное совпадение имени \"name\" или по регулярному выражению \"regular\".\n" +
-                        "-o - результат записать в файл");
-                default -> System.out.println(key + " is not a find command. See 'find --help'. ");
+                case "-d":
+                     finder.setDirectory(value);
+                    break;
+                case "-n":
+                    finder.setLookingFor(value);
+                    break;
+                case "-t":
+                    finder.setHowToSearch(value);
+                    break;
+                case "-o":
+                    saver.setFileOut(value);
+                    break;
+                case "--help":
+                    System.out.println("-d - директория, в которой начинать поиск.\n"
+                            + "-n - имя файла, маска, либо регулярное выражение.\n"
+                            + "-t - искать по маске\"mask\" полное совпадение имени \"name\" или по регулярному выражению \"regular\".\n"
+                            + "-o - результат записать в файл");
+                    break;
+                default:
+                    System.out.println(key + " is not a find command. See 'find --help'. ");
             }
         }
     }

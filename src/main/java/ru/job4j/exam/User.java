@@ -4,42 +4,46 @@ import java.util.Objects;
 import java.util.TreeSet;
 
 public class User {
-  private String name;
-  private TreeSet<String> mails;
+    private String name;
+    private TreeSet<String> mails;
 
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  public TreeSet<String> getMails() {
-    return mails;
-  }
+    public TreeSet<String> getMails() {
+        return mails;
+    }
 
-  public void setMails(TreeSet<String> mails) {
-    this.mails = mails;
-  }
+    public void setMails(TreeSet<String> mails) {
+        this.mails = mails;
+    }
 
-  public User(String name, TreeSet<String> mails) {
-    this.name = name;
-    this.mails = mails;
-  }
+    public User(String name, TreeSet<String> mails) {
+        this.name = name;
+        this.mails = mails;
+    }
 
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (!(o instanceof User)) return false;
-    User user = (User) o;
-    return getMails().equals(user.getMails());
-  }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (!(o instanceof User)) {
+            return false;
+        }
+        User user = (User) o;
+        return getMails().equals(user.getMails());
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(getMails());
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(getMails());
+    }
 //  @Override
 //  public int hashCode() {
 //    return 42;

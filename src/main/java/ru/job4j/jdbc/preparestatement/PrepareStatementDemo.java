@@ -1,4 +1,4 @@
-package ru.job4j.jdbc.prepare_statement;
+package ru.job4j.jdbc.preparestatement;
 
 import lombok.Getter;
 import ru.job4j.io.Config;
@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
+
 @Getter
 public class PrepareStatementDemo {
     private Connection connection;
@@ -37,6 +38,7 @@ public class PrepareStatementDemo {
             e.printStackTrace();
         }
     }
+
     public boolean update(City city) {
         boolean result = false;
         try (PreparedStatement statement =
@@ -50,6 +52,7 @@ public class PrepareStatementDemo {
         }
         return result;
     }
+
     public boolean delete(int id) {
         boolean result = false;
         try (PreparedStatement statement =
@@ -61,6 +64,7 @@ public class PrepareStatementDemo {
         }
         return result;
     }
+
     public List<City> findAll() {
         List<City> cities = new ArrayList<>();
         try (PreparedStatement statement = connection.prepareStatement("select * from cities")) {

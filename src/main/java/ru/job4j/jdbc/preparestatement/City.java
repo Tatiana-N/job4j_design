@@ -1,4 +1,4 @@
-package ru.job4j.jdbc.prepare_statement;
+package ru.job4j.jdbc.preparestatement;
 
 public class City {
     private int id;
@@ -35,11 +35,11 @@ public class City {
 
     @Override
     public String toString() {
-        return "City{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", population=" + population +
-                '}';
+        return "City{"
+                + "id=" + id
+                + ", name='" + name + '\''
+                + ", population=" + population
+                + '}';
     }
 
     public void setPopulation(int population) {

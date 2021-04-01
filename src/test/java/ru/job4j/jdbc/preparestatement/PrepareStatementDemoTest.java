@@ -1,9 +1,9 @@
-package ru.job4j.jdbc.prepare_statement;
+package ru.job4j.jdbc.preparestatement;
 
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import ru.job4j.jdbc.TableEditor;
 
 import java.io.FileInputStream;
@@ -15,7 +15,8 @@ public class PrepareStatementDemoTest {
     Properties properties;
     TableEditor tableEditor;
     PrepareStatementDemo prepareStatement;
-    String table_name = "cities";
+    String tableName = "cities";
+
     {
         try {
             prepareStatement = new PrepareStatementDemo();
@@ -23,11 +24,12 @@ public class PrepareStatementDemoTest {
             e.printStackTrace();
         }
     }
+
     @After
-    public void afterEach(){
+    public void afterEach() {
         System.out.println("--------------after method-----------------");
         findAll();
-        tableEditor.dropTable(table_name);
+        tableEditor.dropTable(tableName);
     }
 
     @Before
@@ -43,8 +45,8 @@ public class PrepareStatementDemoTest {
         }
         tableEditor = new TableEditor(properties);
         System.out.println("--------------create Table-----------------");
-        tableEditor.createTable(table_name);
-        tableEditor.addColumn(table_name,"population", "int");
+        tableEditor.createTable(tableName);
+        tableEditor.addColumn(tableName, "population", "int");
         insert();
         System.out.println("--------------insert for start-----------------");
         findAll();
@@ -52,8 +54,8 @@ public class PrepareStatementDemoTest {
 
     @Test
     public void insert() {
-        prepareStatement.insert(new City(1,"London", 100_000));
-        prepareStatement.insert(new City(2,"Kazan'", 200_000));
+        prepareStatement.insert(new City(1, "London", 100_000));
+        prepareStatement.insert(new City(2, "Kazan'", 200_000));
     }
 
     @Test
@@ -64,8 +66,8 @@ public class PrepareStatementDemoTest {
     @Test
     public void delete() {
         boolean delete = prepareStatement.delete(1);
-        Assertions.assertTrue(delete);
-        Assertions.assertFalse(prepareStatement.delete(3));
+        Assert.assertTrue(delete);
+        Assert.assertFalse(prepareStatement.delete(3));
     }
 
     @Test
