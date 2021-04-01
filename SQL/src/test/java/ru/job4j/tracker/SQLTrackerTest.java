@@ -1,7 +1,6 @@
 package ru.job4j.tracker;
 
 
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +12,12 @@ import java.util.List;
 import java.util.Properties;
 
 public class SQLTrackerTest {
-    Properties config;
+    SQLTracker sqlTracker;
+    String newItem = "new_item";
+    String nameForReplace = "replace_name";
+    private static Properties config;
 
-    public Connection init() {
+    public static Connection init() {
         try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
             config = new Properties();
             config.load(in);
@@ -30,29 +32,19 @@ public class SQLTrackerTest {
         }
     }
 
-    SQLTracker sqlTracker;
-    String newItem = "new_item";
-    String nameForReplace = "replace_name";
-
     @Before
     public void before() {
-        sqlTracker = new SQLTracker(this.init());
+        sqlTracker = new SQLTracker(SQLTrackerTest.init());
         sqlTracker.setTableName(config.getProperty("table_name"));
+        while (sqlTracker.findAll().size() > 0) {
+            sqlTracker.delete(String.valueOf(findFirst().getId()));
+        }
         sqlTracker.add(new Item("carrot"));
         sqlTracker.add(new Item("tomato"));
         sqlTracker.add(new Item("pepper"));
         sqlTracker.add(new Item("onion"));
     }
 
-    @AfterClass
-    public void after() {
-        sqlTracker = new SQLTracker(this.init());
-        sqlTracker.setTableName(config.getProperty("table_name"));
-        while (sqlTracker.findAll().size() > 0) {
-            sqlTracker.delete(String.valueOf(findFirst().getId()));
-        }
-    }
-    
     @Test
     public void add() {
         Item item = new Item(newItem);
@@ -88,7 +80,6 @@ public class SQLTrackerTest {
     @Test
     public void failDelete() {
         Assert.assertFalse(sqlTracker.delete("15"));
-
     }
 
     @Test

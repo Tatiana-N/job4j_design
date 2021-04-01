@@ -1,11 +1,9 @@
-package ru.job4j.spammer;
+package ru.job4j.tracker;
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.job4j.tracker.ConnectionRollback;
-import ru.job4j.tracker.Item;
-import ru.job4j.tracker.SQLTracker;
 
 import java.io.InputStream;
 import java.sql.Connection;
@@ -15,13 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-public class ImportDBTest {
-   private  Properties config;
-    private  SQLTracker sqlTracker;
-    private  String nameForReplace = "replace_name";
+public class TestTrackerWithRollBack {
+    private Properties config;
+    private SQLTracker sqlTracker;
+    private String nameForReplace = "replace_name";
     private List<Item> list;
 
-    public   Connection init() {
+    public Connection init() {
         try (InputStream in = SQLTracker.class.getClassLoader().getResourceAsStream("tracker.properties")) {
             config = new Properties();
             config.load(in);
@@ -37,7 +35,7 @@ public class ImportDBTest {
     }
 
     @Before
-    public  void before() throws SQLException {
+    public void before() throws SQLException {
         list = new ArrayList<>();
         sqlTracker = new SQLTracker((ConnectionRollback.create(this.init())));
         sqlTracker.setTableName(config.getProperty("table_name"));
@@ -50,6 +48,11 @@ public class ImportDBTest {
         list.add(apple);
         list.add(pineapple);
         list.add(tomato);
+    }
+
+    @After
+    public void after() throws Exception {
+     sqlTracker.close();
     }
 
     @Test
@@ -104,6 +107,5 @@ public class ImportDBTest {
         List<Item> byName = sqlTracker.findByName(first.getName());
         Assert.assertEquals(byName.size(), 1);
         Assert.assertEquals(byName.get(0), first);
-
     }
 }
