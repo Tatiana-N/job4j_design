@@ -1,19 +1,38 @@
 package ru.job4j.tracker;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
-@Getter
-@Setter
 public class SQLTracker implements Store {
     private Connection connection;
     private String tableName;
     private Properties config;
+
+    public Connection getConnection() {
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
+    }
+
+    public String getTableName() {
+        return tableName;
+    }
+
+    public void setTableName(String tableName) {
+        this.tableName = tableName;
+    }
+
+    public Properties getConfig() {
+        return config;
+    }
+
+    public void setConfig(Properties config) {
+        this.config = config;
+    }
 
     public SQLTracker(Connection connection) {
         this.connection = connection;

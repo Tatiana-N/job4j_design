@@ -1,6 +1,7 @@
 package ru.job4j.tracker;
 
 
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,13 +37,17 @@ public class SQLTrackerTest {
     public void before() {
         sqlTracker = new SQLTracker(SQLTrackerTest.init());
         sqlTracker.setTableName(config.getProperty("table_name"));
-        while (sqlTracker.findAll().size() > 0) {
-            sqlTracker.delete(String.valueOf(findFirst().getId()));
-        }
         sqlTracker.add(new Item("carrot"));
         sqlTracker.add(new Item("tomato"));
         sqlTracker.add(new Item("pepper"));
         sqlTracker.add(new Item("onion"));
+    }
+
+    @After
+    public void after() {
+        while (sqlTracker.findAll().size() > 0) {
+            sqlTracker.delete(String.valueOf(findFirst().getId()));
+        }
     }
 
     @Test
