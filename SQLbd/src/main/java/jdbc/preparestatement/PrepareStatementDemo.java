@@ -1,4 +1,4 @@
-package ru.job4j.jdbc.preparestatement;
+package jdbc.preparestatement;
 
 import lombok.Getter;
 import ru.job4j.io.Config;

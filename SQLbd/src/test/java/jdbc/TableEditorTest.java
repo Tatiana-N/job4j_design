@@ -1,4 +1,4 @@
-package ru.job4j.jdbc;
+package jdbc;
 
 import org.junit.After;
 import org.junit.Assert;

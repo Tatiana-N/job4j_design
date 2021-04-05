@@ -1,10 +1,10 @@
-package ru.job4j.jdbc.preparestatement;
+package jdbc.preparestatement;
 
+import jdbc.TableEditor;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import ru.job4j.jdbc.TableEditor;
 
 import java.io.FileInputStream;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package ru.job4j.jdbc;
+package jdbc;
 
 import ru.job4j.io.Config;
 
@@ -29,7 +29,7 @@ public class ConnectionDemo {
         return scheme.toString();
     }
 
-    public static void main(String[] args) throws ClassNotFoundException, SQLException {
+    public static void main(String[] args) {
         try (Connection connection = getConnection()) {
             try (Statement statement = connection.createStatement()) {
                 String sql = String.format(

@@ -56,10 +56,10 @@ public class ImportDB {
 
     public static void main(String[] args) throws Exception {
         Properties cfg = new Properties();
-        try (FileInputStream in = new FileInputStream("SQL/src/main/resources/app.properties")) {
+        try (FileInputStream in = new FileInputStream("SQLbd/src/main/resources/spammer.properties")) {
             cfg.load(in);
         }
-        ImportDB db = new ImportDB(cfg, "SQL/src/main/resources/dump.txt");
+        ImportDB db = new ImportDB(cfg, "SQLbd/src/main/resources/dump.txt");
         db.save(db.load());
     }
 }
