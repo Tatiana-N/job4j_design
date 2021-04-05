@@ -14,6 +14,7 @@ public class ConnectionDemo {
         String password = config.value("password");
         return DriverManager.getConnection(url, login, password);
     }
+
     public static String getTableScheme(Connection connection, String tableName) throws Exception {
         StringBuilder scheme = new StringBuilder();
         DatabaseMetaData metaData = connection.getMetaData();
@@ -27,6 +28,7 @@ public class ConnectionDemo {
         }
         return scheme.toString();
     }
+
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         try (Connection connection = getConnection()) {
             try (Statement statement = connection.createStatement()) {
