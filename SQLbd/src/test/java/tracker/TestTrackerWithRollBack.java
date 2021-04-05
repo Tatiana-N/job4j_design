@@ -88,7 +88,7 @@ public class TestTrackerWithRollBack {
 
     @Test
     public void failDelete() {
-        Assert.assertFalse(sqlTracker.delete("15"));
+        Assert.assertFalse(sqlTracker.delete("-1"));
     }
 
     @Test
