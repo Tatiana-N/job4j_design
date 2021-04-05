@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class TableEditorTest {
     Properties properties;
-    String newTable = "new_table";
+    String newTable = "cities";
     String newColumn = "new_column";
     String columnName = " name ";
     String type = "varchar(50)";
