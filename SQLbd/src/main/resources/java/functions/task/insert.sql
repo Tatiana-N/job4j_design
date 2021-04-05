@@ -1,0 +1,18 @@
+insert into  devices (name,price) values ('iphone',3000);
+insert into devices (name,price) values ('samsung',2000);
+insert into devices (name,price) values ('mi',300);
+insert into devices (name,price) values ('watch1',3000);
+insert into devices (name,price) values ('watch2',30);
+insert into devices (name,price) values ('robot',900);
+insert into devices (name,price) values ('computer',12000);
+insert into people (name) values ('Tad');
+insert into people (name) values ('Kate');
+insert into people (name) values ('Lisa');
+insert into devices_people ( people_id, device_id) VALUES (1,1);
+insert into devices_people ( people_id, device_id) VALUES (2,2);
+insert into devices_people ( people_id, device_id) VALUES (3,3);
+insert into devices_people ( people_id, device_id) VALUES (1,3);
+insert into devices_people ( people_id, device_id) VALUES (1,4);
+insert into devices_people ( people_id, device_id) VALUES (1,7);
+insert into devices_people ( people_id, device_id) VALUES (2,5);
+insert into devices_people ( people_id, device_id) VALUES (3,4);

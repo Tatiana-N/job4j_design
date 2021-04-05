@@ -10,7 +10,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>finder</module>
-        <module>SQL</module>
+        <module>SQLbd</module>
     </modules>
 
     <name>job4j_design</name>
@@ -143,8 +143,8 @@
 
 
                 </annotationProcessorPaths>
-                <source>1.8</source>
-                <target>1.8</target>
+                <source>11</source>
+                <target>11</target>
             </configuration>
         </plugin>
             <plugin>
