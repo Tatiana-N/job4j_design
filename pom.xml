@@ -11,6 +11,7 @@
     <modules>
         <module>finder</module>
         <module>SQLbd</module>
+        <module>design</module>
     </modules>
 
     <name>job4j_design</name>
