@@ -5,11 +5,11 @@ import org.junit.Test;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 
-public class Shell2Tests {
+public class ShellTest {
 
     @Test
     public void whenCdBack() {
-        Shell2 shell = new Shell2();
+        Shell shell = new Shell();
         shell.cd("/user/..");
         assertThat(
                 shell.pwd(), is("/")
@@ -37,6 +37,45 @@ public class Shell2Tests {
 
     @Test
     public void whenCdUserBack() {
+        Shell shell = new Shell();
+        shell.cd("user");
+        shell.cd("..");
+        assertThat(
+                shell.pwd(), is("/")
+        );
+    }
+
+    @Test
+    public void whenCdBack2() {
+        Shell shell = new Shell();
+        shell.cd("/user");
+        shell.cd("../root");
+        assertThat(
+                shell.pwd(), is("/root")
+        );
+    }
+
+    @Test
+    public void whenCdRoot2() {
+        Shell shell = new Shell();
+        shell.cd("/");
+        assertThat(
+                shell.pwd(), is("/")
+        );
+    }
+
+    @Test
+    public void whenCdUserLocal2() {
+        Shell shell = new Shell();
+        shell.cd("user");
+        shell.cd("local");
+        assertThat(
+                shell.pwd(), is("/user/local")
+        );
+    }
+
+    @Test
+    public void whenCdUserBack2() {
         Shell shell = new Shell();
         shell.cd("user");
         shell.cd("..");

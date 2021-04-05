@@ -10,7 +10,7 @@ public class Shell2 {
     }
 
     public void cd(String path) {
-        String[] split = path.split("");
+        String[] split = path.split("/");
         StringBuilder stringBuilder = new StringBuilder();
         strings.push("/");
         for (String s : split) {
@@ -21,7 +21,7 @@ public class Shell2 {
                     continue;
                 }
             }
-            if (s.equals(".")) {
+            if (s.equals("..")) {
                 if (!stringBuilder.toString().equals("")) {
                     strings.push(stringBuilder.toString());
                     stringBuilder = new StringBuilder();
