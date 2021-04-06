@@ -18,14 +18,6 @@ public class SQLTracker implements Store {
         this.connection = connection;
     }
 
-    public String getTableName() {
-        return tableName;
-    }
-
-    public void setTableName(String tableName) {
-        this.tableName = tableName;
-    }
-
     public Properties getConfig() {
         return config;
     }
@@ -34,7 +26,8 @@ public class SQLTracker implements Store {
         this.config = config;
     }
 
-    public SQLTracker(Connection connection) {
+    public SQLTracker(Connection connection, String tableName) {
+        this.tableName = tableName;
         this.connection = connection;
     }
 

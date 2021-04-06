@@ -37,8 +37,7 @@ public class SQLTrackerTest {
 
     @Before
     public void before() {
-        sqlTracker = new SQLTracker(SQLTrackerTest.init());
-        sqlTracker.setTableName(config.getProperty("table_name"));
+        sqlTracker = new SQLTracker(SQLTrackerTest.init(), config.getProperty("table_name"));
         sqlTracker.add(new Item("carrot"));
         sqlTracker.add(new Item("tomato"));
         sqlTracker.add(new Item("pepper"));
@@ -64,7 +63,8 @@ public class SQLTrackerTest {
 
     public Item findFirst() {
         List<Item> all = sqlTracker.findAll();
-        return all.stream().findFirst().get();
+        assert all != null;
+        return all.get(0);
     }
 
     @Test
@@ -79,7 +79,8 @@ public class SQLTrackerTest {
     @Test
     public void delete() {
         List<Item> all = sqlTracker.findAll();
-        Item first = all.stream().findFirst().get();
+        assert all != null;
+        Item first = all.get(0);
         Assert.assertTrue(sqlTracker.delete(String.valueOf(first.getId())));
         Assert.assertFalse(sqlTracker.findAll().contains(first));
     }
