@@ -15,11 +15,12 @@ public abstract class AbstractCache<K, V> {
 	
 	public V get(K key) {
 		SoftReference<V> softReference = cache.get(key);
-		if (softReference == null) {
+		V value;
+		if (softReference == null || (value = softReference.get()) == null) {
 			return load(key);
 		}
 		System.out.printf("Файл с именем %s загружен из кеша \n", key);
-		return softReference.get();
+		return value;
 	}
 	
 	protected abstract V load(K key);

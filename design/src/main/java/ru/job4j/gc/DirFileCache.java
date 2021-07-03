@@ -22,6 +22,7 @@ public class DirFileCache extends AbstractCache<String, String> {
 			this.put(key, text);
 			return text;
 		} catch (IOException e) {
+			System.out.println("файл не найден");
 			throw new RuntimeException(e.getMessage());
 		}
 	}
