@@ -17,7 +17,9 @@ public abstract class AbstractCache<K, V> {
 		SoftReference<V> softReference = cache.get(key);
 		V value;
 		if (softReference == null || (value = softReference.get()) == null) {
-			return load(key);
+			value = load(key);
+			put(key, value);
+			return value;
 		}
 		System.out.printf("Файл с именем %s загружен из кеша \n", key);
 		return value;

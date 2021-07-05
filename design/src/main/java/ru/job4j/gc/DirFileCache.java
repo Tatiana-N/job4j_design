@@ -18,9 +18,7 @@ public class DirFileCache extends AbstractCache<String, String> {
 	@Override
 	protected String load(String key) {
 		try {
-			String text = Files.lines(Paths.get(cachingDir + File.separator + key), StandardCharsets.UTF_8).collect(Collectors.joining());
-			this.put(key, text);
-			return text;
+			return Files.lines(Paths.get(cachingDir + File.separator + key), StandardCharsets.UTF_8).collect(Collectors.joining());
 		} catch (IOException e) {
 			System.out.println("файл не найден");
 			throw new RuntimeException(e.getMessage());
