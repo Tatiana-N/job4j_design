@@ -1,6 +1,7 @@
 package ru.job4j.gc;
 
 import com.carrotsearch.sizeof.RamUsageEstimator;
+import org.junit.Assert;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,25 +22,140 @@ public class GCDemo {
 		System.out.printf("Max: %d%n", maxMemory / MB);
 	}
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
+		/**
+		 * Минимальный размер объекта  складывается из
+		 * заголовка
+		 * 8 байт
+		 * 4 байт
+		 * Всего 12 и дополняется до кратности 8
+		 * т.е. размер пустого обекта = 16 байт
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Object()), 16);
+		/**
+		 * Размер пустого объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person()), 24);
+		/**
+		 * Размер объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10)), 24);
+		/**
+		 * Размер полного объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 * итого 24 байта +
+		 *    обект строка :
+		 *    заголовок 4 + 8
+		 *    @param  value 8 байт (ссылка на массив)
+		 *    private final char value[]
+		 *    Array that is the source of characters
+		 *    @param  offset int  4 байта
+		 *    The initial offset
+		 *    @param  count int  4 байта
+		 *    итого 28 байта +
+		 *        new char[]
+		 *        заголовок 4 + 8
+		 *        char 2*0
+		 *        итого  12 байт
+		 *  Всего: 64
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "")), 64);
+		
+		/**
+		 * Размер полного объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 * итого 24 байта +
+		 *    обект строка :
+		 *    заголовок 4 + 8
+		 *    @param  value 8 байт (ссылка на массив)
+		 *    private final char value[]
+		 *    Array that is the source of characters
+		 *    @param  offset int  4 байта
+		 *    The initial offset
+		 *    @param  count int  4 байта
+		 *    итого 28 байта +
+		 *        new char[4]
+		 *        заголовок 4 + 8
+		 *        char 2 * 4
+		 *        итого  20 байт
+		 *  Всего: 72
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Таня")), 72);
+		/**
+		 * Размер полного объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 * итого 24 байта +
+		 *    обект строка :
+		 *    заголовок 4 + 8
+		 *    @param  value 8 байт (ссылка на массив)
+		 *    private final char value[]
+		 *    Array that is the source of characters
+		 *    @param  offset int  4 байта
+		 *    The initial offset
+		 *    @param  count int  4 байта
+		 *    итого 28 байта +
+		 *        new char[4]
+		 *        заголовок 4 + 8
+		 *        char 2 * 5
+		 *        итого  22 байт
+		 *  Всего 74 и дополняется до кратности 8
+		 *  Всего: 80
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "ТаняН")), 80);
+		/**
+		 * Размер полного объекта  Person состоит из:
+		 * заголовка
+		 * 8 байт
+		 * 4 байта
+		 * private int age = 4 байта
+		 * private String name = 8 байтов
+		 * итого 24 байта +
+		 *    обект строка :
+		 *    заголовок 4 + 8
+		 *    @param  value 8 байт (ссылка на массив)
+		 *    private final char value[]
+		 *    Array that is the source of characters
+		 *    @param  offset int  4 байта
+		 *    The initial offset
+		 *    @param  count int  4 байта
+		 *    итого 28 байта +
+		 *        new char[4]
+		 *        заголовок 4 + 8
+		 *        char 2 * 6
+		 *        итого  24 байт
+		 *  Всего 76 и дополняется до кратности 8
+		 *  Всего: 80
+		 */
+		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Танюша")), 80);
 		info();
 		List<Person> list = new ArrayList<>();
-		for (int i = 0; i < 200; i++) {
-			Person person = new Person(i, "N" + i);
-			person.setAge(20);
-			person.setName("Tanya");
+		for (int i = 0; i < 400; i++) {
+			Person person = new Person(i, "Танюша");
+			new Person(i, "Для удаления");
 			list.add(person);
-			System.out.print(RamUsageEstimator.sizeOf(person));
-			System.out.print(" ");
-			System.out.print(RamUsageEstimator.sizeOf(new Person(i, "N" + i)));
-			System.out.print(" ");
-			if (i % 20 == 0) {
-				System.gc();
-			}
 		}
-		info();
-		System.out.println(RamUsageEstimator.sizeOf(list));
-		System.gc();
 		info();
 	}
 }
