@@ -29,6 +29,36 @@ public class CinemaTest {
 		assertThat(ticket, is(new Ticket3D()));
 	}
 	
+	@Test(expected = IllegalArgumentException.class)
+	public void incorrectData() {
+		Account account = new AccountCinema();
+		Cinema cinema = new Cinema3D();
+		Calendar date = Calendar.getInstance();
+		date.set(1820, 10, 10, 23, 00);
+		Ticket ticket = cinema.buy(account, 1, 1, date);
+		assertThat(ticket, is(new Ticket3D()));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void wrongTicket() {
+		Account account = new AccountCinema();
+		Cinema cinema = new Cinema3D();
+		Calendar date = Calendar.getInstance();
+		date.set(2020, 10, 10, 23, 00);
+		Ticket ticket = cinema.buy(account, -1, 1, date);
+		assertThat(ticket, is(new Ticket3D()));
+	}
+	
+	@Test(expected = IllegalArgumentException.class)
+	public void boughtTicket() {
+		Account account = new AccountCinema();
+		Cinema cinema = new Cinema3D();
+		Calendar date = Calendar.getInstance();
+		date.set(2020, 10, 10, 23, 00);
+		Ticket ticket1 = cinema.buy(account, 1, 1, date);
+		Ticket ticket2 = cinema.buy(account, 1, 1, date);
+	}
+	
 	@Test
 	public void add() {
 		Cinema cinema = new Cinema3D();
