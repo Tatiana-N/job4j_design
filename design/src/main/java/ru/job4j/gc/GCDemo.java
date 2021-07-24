@@ -23,6 +23,7 @@ public class GCDemo {
 	}
 	
 	public static void main(String[] args) throws InterruptedException {
+		Thread.sleep(25000);
 		/**
 		 * Минимальный размер объекта  складывается из
 		 * заголовка
@@ -40,7 +41,7 @@ public class GCDemo {
 		 * private int age = 4 байта
 		 * private String name = 8 байтов
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person()), 24);
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person()), 24);
 		/**
 		 * Размер объекта  Person состоит из:
 		 * заголовка
@@ -49,7 +50,7 @@ public class GCDemo {
 		 * private int age = 4 байта
 		 * private String name = 8 байтов
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10)), 24);
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10)), 24);
 		/**
 		 * Размер полного объекта  Person состоит из:
 		 * заголовка
@@ -73,7 +74,7 @@ public class GCDemo {
 		 *        итого  12 байт
 		 *  Всего: 64
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "")), 64);
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "")), 64);
 		
 		/**
 		 * Размер полного объекта  Person состоит из:
@@ -98,7 +99,7 @@ public class GCDemo {
 		 *        итого  20 байт
 		 *  Всего: 72
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Таня")), 72);
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Таня")), 72);
 		/**
 		 * Размер полного объекта  Person состоит из:
 		 * заголовка
@@ -123,7 +124,7 @@ public class GCDemo {
 		 *  Всего 74 и дополняется до кратности 8
 		 *  Всего: 80
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "ТаняН")), 80);
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "ТаняН")), 80);
 		/**
 		 * Размер полного объекта  Person состоит из:
 		 * заголовка
@@ -145,16 +146,23 @@ public class GCDemo {
 		 *        заголовок 4 + 8
 		 *        char 2 * 6
 		 *        итого  24 байт
+		 *
+		 *                  40 пустая
 		 *  Всего 76 и дополняется до кратности 8
 		 *  Всего: 80
 		 */
-		Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Танюша")), 80);
-		info();
+		//	Assert.assertEquals(RamUsageEstimator.sizeOf(new Person(10, "Tanyaa")), 80);
+		System.out.println(RamUsageEstimator.sizeOf("FFFFF"));
+		System.out.println(RamUsageEstimator.sizeOf("ППППП"));
+		
 		List<Person> list = new ArrayList<>();
-		for (int i = 0; i < 400; i++) {
+		for (int i = 0; i < 2_000_000; i++) {
 			Person person = new Person(i, "Танюша");
-			new Person(i, "Для удаления");
+			Person n = new Person(i, "Для удаления");
 			list.add(person);
+			if (list.size() % 1000 == 0) {
+				System.out.println(list.size());
+			}
 		}
 		info();
 	}

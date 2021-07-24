@@ -119,6 +119,11 @@ from (select m.name as name,
 group by nt.name
 order by nt.name;
 
+SELECT m.name, count(um.participation_status_id) from meetings m LEFT JOIN user_meeting um on m.id = um.meeting_id
+    WHERE um.participation_status_id = 3
+
+GROUP BY m.name;
+
 
 -- Нужно получить все совещания, где не было ни одной заявки на посещения
 select m.name
