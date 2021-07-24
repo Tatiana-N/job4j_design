@@ -12,4 +12,6 @@ public interface ControlQualityInterface {
 	List<Food> getWarehouse();
 	
 	List<Food> getShop();
+	
+	void resort();
 }

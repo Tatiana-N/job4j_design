@@ -7,6 +7,7 @@ import ru.job4j.solid.lsp.products.api.ControlQualityInterface;
 import ru.job4j.solid.lsp.products.api.Storage;
 import ru.job4j.solid.lsp.products.Food;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -39,7 +40,7 @@ public class ControlQuality implements ControlQualityInterface {
 	public List<Food> getTrash() {
 		System.out.println("Trash");
 		System.out.println(trash.getAllFood());
-		return  trash.getAllFood();
+		return trash.getAllFood();
 	}
 	
 	@Override
@@ -54,5 +55,17 @@ public class ControlQuality implements ControlQualityInterface {
 		System.out.println("Shop");
 		System.out.println(shop.getAllFood());
 		return shop.getAllFood();
+	}
+	
+	@Override
+	public void resort() {
+		List<Food> foodList = new ArrayList<>(shop.getAllFood());
+		foodList.addAll(warehouse.getAllFood());
+		shop = new Shop();
+		warehouse = new Warehouse();
+		for (Food food : foodList) {
+			food.setDiscount(0);
+			distributeFood(food);
+		}
 	}
 }

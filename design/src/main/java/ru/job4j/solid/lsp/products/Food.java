@@ -2,11 +2,11 @@ package ru.job4j.solid.lsp.products;
 
 import lombok.Getter;
 import lombok.Setter;
+import ru.job4j.solid.lsp.products.api.ParserDate;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Calendar;
-import java.util.Locale;
+
 @Setter
 @Getter
 public class Food {
@@ -15,7 +15,6 @@ public class Food {
 	Calendar createDate;
 	double price;
 	double discount;
-	SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.ENGLISH);
 	
 	public Food(String name, Calendar expiryDate, Calendar createDate, double price, double discount) {
 		this.name = name;
@@ -25,24 +24,10 @@ public class Food {
 		this.discount = discount;
 	}
 	
-	public Food(String name, String expiryDate, String createDate, double price, double discount) {
-		this.name = name;
-		Calendar expiryDateFromString = Calendar.getInstance();
-		Calendar createDateFromString = Calendar.getInstance();
-		try {
-			expiryDateFromString.setTime(sdf.parse(expiryDate));
-			createDateFromString.setTime(sdf.parse(createDate));
-		} catch (ParseException e) {
-			throw new RuntimeException("пишите дату в формате dd.MM.yyyy");
-		}
-		this.expiryDate = expiryDateFromString;
-		this.createDate = createDateFromString;
-		this.price = price;
-		this.discount = discount;
-	}
-	
 	@Override
 	public String toString() {
+		ParserDate<Calendar> parserDate = new ParseDateToCalendar("dd.MM.yyyy");
+		DateFormat sdf = parserDate.getFormatter();
 		return "Food{" + "name='" + name + '\'' + ", expiryDate=" + sdf.format(expiryDate.getTime()) + ", createDate=" + sdf.format(createDate.getTime()) + ", price=" + price + ", discount=" + discount + '}';
 	}
 }
