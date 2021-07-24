@@ -1,5 +1,7 @@
 package ru.job4j.solid.lsp.products;
 
+import ru.job4j.solid.lsp.products.api.Storage;
+
 import java.util.ArrayList;
 import java.util.List;
 

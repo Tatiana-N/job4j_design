@@ -2,6 +2,8 @@ package ru.job4j.solid.lsp.products;
 
 import org.junit.Assert;
 import org.junit.Test;
+import ru.job4j.solid.lsp.products.api.ControlQualityInterface;
+import ru.job4j.solid.lsp.products.controller.ControlQuality;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,9 +27,9 @@ public class ControlQualityTest {
 		foodList.add(pumpkin);
 		foodList.add(potato);
 		
-		ControlQuality controlQuality = new ControlQuality();
+		ControlQualityInterface controlQuality = new ControlQuality();
 		for (Food food : foodList) {
-			controlQuality.sendFood(food);
+			controlQuality.distributeFood(food);
 		}
 		List<Food> trash = controlQuality.getTrash();
 		List<Food> warehouse = controlQuality.getWarehouse();

@@ -1,4 +1,6 @@
-package ru.job4j.solid.lsp.products;
+package ru.job4j.solid.lsp.products.api;
+
+import ru.job4j.solid.lsp.products.Food;
 
 import java.util.List;
 

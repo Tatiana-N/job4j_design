@@ -1,17 +1,25 @@
-package ru.job4j.solid.lsp.products;
+package ru.job4j.solid.lsp.products.controller;
+
+import ru.job4j.solid.lsp.products.Shop;
+import ru.job4j.solid.lsp.products.Trash;
+import ru.job4j.solid.lsp.products.Warehouse;
+import ru.job4j.solid.lsp.products.api.ControlQualityInterface;
+import ru.job4j.solid.lsp.products.api.Storage;
+import ru.job4j.solid.lsp.products.Food;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class ControlQuality {
+public class ControlQuality implements ControlQualityInterface {
 	Storage trash = new Trash();
 	Storage shop = new Shop();
 	Storage warehouse = new Warehouse();
 	
-	public void sendFood(Food food) {
+	@Override
+	public void distributeFood(Food food) {
 		long now = Calendar.getInstance().getTimeInMillis();
-		long expiryDateTime = food.expiryDate.getTimeInMillis();
-		long createDateTime = food.createDate.getTimeInMillis();
+		long expiryDateTime = food.getExpiryDate().getTimeInMillis();
+		long createDateTime = food.getCreateDate().getTimeInMillis();
 		long milliSecondsGone = now - createDateTime;
 		long milliSecondsToExpiry = expiryDateTime - createDateTime;
 		int percent = (int) ((double) milliSecondsGone / (double) milliSecondsToExpiry * 100);
@@ -27,19 +35,22 @@ public class ControlQuality {
 		}
 	}
 	
-	List<Food> getTrash() {
+	@Override
+	public List<Food> getTrash() {
 		System.out.println("Trash");
 		System.out.println(trash.getAllFood());
 		return  trash.getAllFood();
 	}
 	
-	List<Food> getWarehouse() {
+	@Override
+	public List<Food> getWarehouse() {
 		System.out.println("Warehouse");
 		System.out.println(warehouse.getAllFood());
 		return warehouse.getAllFood();
 	}
 	
-	List<Food> getShop() {
+	@Override
+	public List<Food> getShop() {
 		System.out.println("Shop");
 		System.out.println(shop.getAllFood());
 		return shop.getAllFood();
