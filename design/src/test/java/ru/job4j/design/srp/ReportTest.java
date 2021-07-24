@@ -2,6 +2,8 @@ package ru.job4j.design.srp;
 
 import org.junit.Test;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static org.hamcrest.CoreMatchers.is;
@@ -79,5 +81,35 @@ public class ReportTest {
 				.append(worker1.getSalary()).append(";")
 				.append(System.lineSeparator());
 		assertThat(programmer.generate(em -> true), is(expect.toString()));
+	}
+	
+	@Test
+	public void xmlFormat() {
+		MemStore store = new MemStore();
+		Calendar now = Calendar.getInstance();
+		Employee worker = new Employee("Ivan", now, now, 100);
+		store.add(worker);
+		Report someOne = new ReporXml(store);
+		//Кто-то захотел отчет в формате XML.
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		StringBuilder expect = new StringBuilder().append("<?xml version=\"1.1\" encoding=\"UTF-8\" ?>").append(System.lineSeparator()).append(String.format("<employee name=%s fired=%s hired=%s  salary=%.2f/>", worker.getName(), df.format(worker.getHired().getTime()), df.format(worker.getFired().getTime()), worker.getSalary())).append(System.lineSeparator());
+		System.out.println(someOne.generate(em -> true));
+		assertThat(someOne.generate(em -> true), is(expect.toString()));
+	}
+	
+	@Test
+	public void jsonFormat() {
+		MemStore store = new MemStore();
+		Calendar now = Calendar.getInstance();
+		Employee worker = new Employee("Ivan", now, now, 100);
+		Employee worker2 = new Employee("Antony", now, now, 200);
+		store.add(worker);
+		store.add(worker2);
+		Report someOne = new ReporJson(store);
+		//Кто-то захотел отчет в формате json.
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		StringBuilder expect = new StringBuilder().append("{\"Employees\":").append(String.format("{" + "\"fired\":\"%s\"," + "\"name\":\"%s\"," + "\"hired\":\"%s\"," + "\"salary\":%s}", df.format(worker.getHired().getTime()), worker.getName(), df.format(worker.getFired().getTime()), (int) worker.getSalary())).append(",").append(String.format("{" + "\"fired\":\"%s\"," + "\"name\":\"%s\"," + "\"hired\":\"%s\"," + "\"salary\":%s}", df.format(worker2.getHired().getTime()), worker2.getName(), df.format(worker2.getFired().getTime()), (int) worker2.getSalary())).append(System.lineSeparator()).append("}");
+		System.out.println(someOne.generate(em -> true));
+		assertThat(someOne.generate(em -> true), is(expect.toString()));
 	}
 }
