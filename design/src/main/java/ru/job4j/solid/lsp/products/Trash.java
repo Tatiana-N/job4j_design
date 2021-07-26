@@ -10,11 +10,19 @@ public class Trash implements Storage {
 	
 	@Override
 	public void addFood(Food food) {
-		list.add(food);
+		int percent = Util.getPercent(food);
+		if (percent > 100) {
+			list.add(food);
+		}
 	}
 	
 	@Override
 	public List<Food> getAllFood() {
 		return list;
+	}
+	
+	@Override
+	public void devastate() {
+		list = new ArrayList<>();
 	}
 }

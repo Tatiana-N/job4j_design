@@ -8,4 +8,6 @@ public interface Storage {
 	void addFood(Food food);
 	
 	List<Food> getAllFood();
+	
+	void devastate();
 }
