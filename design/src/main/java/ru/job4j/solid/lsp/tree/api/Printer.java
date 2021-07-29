@@ -1,5 +1,5 @@
 package ru.job4j.solid.lsp.tree.api;
 
-public interface PrinterTasks {
+public interface Printer {
 	void printAllTask(String paragraph, String prefix);
 }
