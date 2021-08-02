@@ -7,9 +7,14 @@ import ru.job4j.solid.lsp.parking.api.Cars;
 @Setter
 public class Car extends Cars {
 	private String name;
-	private final int length = 1;
+	private final int length;
 	
-	public Car(String name) {
+	public Car(String name, int length) {
 		this.name = name;
+		if (length == 1) {
+			this.length = length;
+		} else {
+			throw new RuntimeException("неправильная машина");
+		}
 	}
 }
