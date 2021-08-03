@@ -20,26 +20,23 @@ public class ParkingImplTest {
 	
 	@Test
 	public void correctPark() {
-		Parking parking = new ParkingImpl(15);
-		Assert.assertTrue(parking.park(car1)); //1
-		Assert.assertTrue(parking.park(car2)); //2
-		Assert.assertTrue(parking.park(car3)); //3
-		Assert.assertTrue(parking.park(car4)); //4
-		Assert.assertTrue(parking.park(car5)); //7
-		Assert.assertTrue(parking.park(car6)); //9
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car6), car6.getLength());
-		Assert.assertTrue(parking.park(car7)); //12
-		Assert.assertFalse(parking.park(car8)); //12!!
-		Assert.assertTrue(parking.park(car1)); //13
-		Assert.assertTrue(parking.park(car6)); //15
-		Assert.assertFalse(parking.park(car2)); //16!!
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car1), 2 * car1.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car7), car7.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car5), car5.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car4), car4.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car3), car3.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car2), car2.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car6), 2 * car6.getLength());
+		Parking parking = new ParkingImpl(7, 3);
+		Assert.assertTrue(parking.park(car1));
+		Assert.assertTrue(parking.park(car2));
+		Assert.assertTrue(parking.park(car3));
+		Assert.assertTrue(parking.park(car4));
+		Assert.assertTrue(parking.park(car5));
+		Assert.assertTrue(parking.park(car6));
+		Assert.assertTrue(parking.park(car7));
+		Assert.assertFalse(parking.park(car8));
+		Assert.assertTrue(parking.park(car7));
+		Assert.assertFalse(parking.park(car2));
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car1), 1);
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car7), 4);
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car5), 1);
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car4), 1);
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car3), 1);
+		Assert.assertEquals(getCountPlase(parking.getAllCars(), car2), 1);
 	}
 	
 	@Test(expected = RuntimeException.class)
@@ -49,22 +46,19 @@ public class ParkingImplTest {
 	
 	@Test
 	public void checkNotParking() {
-		Parking parking = new ParkingImpl(3);
-		Assert.assertTrue(parking.park(car6)); //2
-		Assert.assertFalse(parking.park(car7)); //2!!!
-		Assert.assertTrue(parking.park(car2)); //3
-		Assert.assertFalse(parking.park(car3)); //3!!!
-		Assert.assertFalse(parking.park(car4)); //3!!!
+		Parking parking = new ParkingImpl(2, 1);
+		Assert.assertTrue(parking.park(car6));
+		Assert.assertFalse(parking.park(car7));
+		Assert.assertTrue(parking.park(car2));
+		Assert.assertTrue(parking.park(car3));
+		Assert.assertFalse(parking.park(car4));
 		Assert.assertFalse(parking.park(car5));
 		Assert.assertFalse(parking.getAllCars().contains(car5));
-		
 		Assert.assertFalse(parking.getAllCars().contains(car4));
-		Assert.assertFalse(parking.getAllCars().contains(car3));
+		Assert.assertTrue(parking.getAllCars().contains(car3));
 		Assert.assertFalse(parking.getAllCars().contains(car7));
 		Assert.assertTrue(parking.getAllCars().contains(car6));
 		Assert.assertTrue(parking.getAllCars().contains(car2));
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car6), car6.getLength());
-		Assert.assertEquals(getCountPlase(parking.getAllCars(), car2), car2.getLength());
 	}
 	
 	private int getCountPlase(List<Cars> list, Cars car) {

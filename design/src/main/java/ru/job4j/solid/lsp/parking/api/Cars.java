@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public abstract class Cars {
-	String name;
-	int length;
+	protected String name;
+	protected int length;
 }

@@ -1,5 +1,6 @@
 package ru.job4j.solid.lsp.parking.app;
 
+import org.apache.maven.surefire.shade.org.apache.commons.lang3.ArrayUtils;
 import ru.job4j.solid.lsp.parking.api.Cars;
 import ru.job4j.solid.lsp.parking.api.Parking;
 
@@ -8,38 +9,35 @@ import java.util.List;
 
 public class ParkingImpl implements Parking {
 	final Cars[] parkedCars;
+	final Cars[] parkedTrucks;
+	private int carPlace = 0;
+	private int truckPlace = 0;
 	
-	public ParkingImpl(int countPlace) {
-		this.parkedCars = new Cars[countPlace];
+	public ParkingImpl(int cars, int trucks) {
+		this.parkedCars = new Cars[cars];
+		this.parkedTrucks = new Cars[trucks];
 	}
 	
 	@Override
 	public boolean park(Cars car) {
-		int canPark = 1;
-		int length = car.getLength();
-		for (int i = 0; i < parkedCars.length; i++) {
-			if (parkedCars[i] == null) {
-				int temp = 1;
-				int copyPlace = i;
-				while (temp++ < length && copyPlace < parkedCars.length) {
-					if (parkedCars[copyPlace] == null) {
-						canPark++;
-					}
-					copyPlace++;
-				}
-				if (canPark == length) {
-					for (int i1 = 0; i1 < length; i1++) {
-						parkedCars[i++] = car;
-					}
-					return true;
-				}
+		if (car instanceof Truck && parkedTrucks.length > truckPlace) {
+			parkedTrucks[truckPlace++] = car;
+			return true;
+		} else if (car instanceof Truck && parkedCars.length - carPlace >= car.getLength()) {
+			for (int i = 0; i < car.getLength(); i++) {
+				parkedCars[carPlace++] = car;
 			}
+			return true;
+		} else if (car instanceof Car && parkedCars.length > carPlace) {
+			parkedCars[carPlace++] = car;
+			return true;
 		}
 		return false;
 	}
 	
 	@Override
 	public List<Cars> getAllCars() {
-		return Arrays.asList(parkedCars);
+		Cars[] both = ArrayUtils.addAll(parkedTrucks, parkedCars);
+		return Arrays.asList(both);
 	}
 }
