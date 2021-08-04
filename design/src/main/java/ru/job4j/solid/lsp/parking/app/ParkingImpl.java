@@ -20,15 +20,15 @@ public class ParkingImpl implements Parking {
 	
 	@Override
 	public boolean park(Cars car) {
-		if (car instanceof Truck && parkedTrucks.length > truckPlace) {
+		if (car.getLength() > 1 && parkedTrucks.length > truckPlace) {
 			parkedTrucks[truckPlace++] = car;
 			return true;
-		} else if (car instanceof Truck && parkedCars.length - carPlace >= car.getLength()) {
+		} else if (car.getLength() > 1 && parkedCars.length - carPlace >= car.getLength()) {
 			for (int i = 0; i < car.getLength(); i++) {
 				parkedCars[carPlace++] = car;
 			}
 			return true;
-		} else if (car instanceof Car && parkedCars.length > carPlace) {
+		} else if (car.getLength() == 1 && parkedCars.length > carPlace) {
 			parkedCars[carPlace++] = car;
 			return true;
 		}
