@@ -16,23 +16,24 @@ public class CsvReader implements Reader {
 	
 	@Override
 	public String read() {
-		Scanner scanner = new Scanner(fileInputStream);
-		scanner.useDelimiter(System.lineSeparator());
-		StringBuilder sb = new StringBuilder();
-		if (scanner.hasNext()) {
-			String[] line = scanner.next().split(delimiter);
-			List<String> strings = Arrays.asList(line);
-			Assert.assertTrue("Указаны не правильные названия колонок", strings.containsAll(collect));
-			List<Integer> columnIntegers = collect.stream().map(strings::indexOf).collect(Collectors.toList());
-			columnIntegers.forEach(t -> sb.append("\t|\t").append(line[t]));
-			sb.append("\t|").append(System.lineSeparator());
-			while (scanner.hasNext()) {
-				String[] words = scanner.next().split(delimiter);
-				columnIntegers.forEach(t -> sb.append("\t|\t").append(words[t]));
+		try (Scanner scanner = new Scanner(fileInputStream)) {
+			scanner.useDelimiter(System.lineSeparator());
+			StringBuilder sb = new StringBuilder();
+			if (scanner.hasNext()) {
+				String[] line = scanner.next().split(delimiter);
+				List<String> strings = Arrays.asList(line);
+				Assert.assertTrue("Указаны не правильные названия колонок", strings.containsAll(collect));
+				List<Integer> columnIntegers = collect.stream().map(strings::indexOf).collect(Collectors.toList());
+				columnIntegers.forEach(t -> sb.append("\t|\t").append(line[t]));
 				sb.append("\t|").append(System.lineSeparator());
+				while (scanner.hasNext()) {
+					String[] words = scanner.next().split(delimiter);
+					columnIntegers.forEach(t -> sb.append("\t|\t").append(words[t]));
+					sb.append("\t|").append(System.lineSeparator());
+				}
 			}
+			return sb.toString();
 		}
-		return sb.toString();
 	}
 	
 	public CsvReader(String path, String delimiter, String... forPredicate) {
