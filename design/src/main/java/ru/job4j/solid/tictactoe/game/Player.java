@@ -18,4 +18,8 @@ public class Player {
 	public Drawable getDrawable() {
 		return drawable;
 	}
+	
+	public void doMove(int[] step, Drawable[][] table) {
+		table[step[0] - 1][step[1] - 1] = this.getDrawable();
+	}
 }

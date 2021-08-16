@@ -14,7 +14,7 @@ public class Game {
 		while (true) {
 			for (Player player : players) {
 				int[] step = contactWithPlayer.getMove(player);
-				field.doMove(step, player);
+				player.doMove(step, field.getTable());
 				contactWithPlayer.drawField();
 				if (validator.hasWinner()) {
 					System.out.println("Игрок по имени " + player.getName() + " - выиграл в этой партии");

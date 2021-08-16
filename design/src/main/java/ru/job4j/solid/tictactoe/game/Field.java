@@ -13,10 +13,6 @@ public class Field {
 		}
 	}
 	
-	public void doMove(int[] step, Player player) {
-		table[step[0] - 1][step[1] - 1] = player.getDrawable();
-	}
-	
 	public Drawable[][] getTable() {
 		return table;
 	}
